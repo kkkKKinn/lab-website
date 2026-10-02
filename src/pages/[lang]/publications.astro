@@ -1,0 +1,130 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../i18n/ui';
+import { isLang } from '../../i18n/utils';
+import PageHero from '../../components/PageHero.astro';
+import PaperItem from '../../components/PaperItem.astro';
+
+export async function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const papers = await getCollection('papers');
+papers.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.year - a.data.year;
+});
+
+const featured = papers.filter((p) => p.data.featured);
+const all = papers.filter((p) => !p.data.featured);
+
+const filters = [
+  { key: 'all', label: u.pub_filter_all },
+  { key: 'journal', label: u.pub_filter_journal },
+  { key: 'conference', label: u.pub_filter_conference },
+  { key: 'patent', label: u.pub_filter_patent },
+  { key: 'other', label: u.pub_filter_other },
+];
+
+const title = isZh ? lab.name_zh : lab.name_en;
+---
+
+<Layout lang={L} title={u.publications_title} description={u.publications_desc} active="publications">
+  <PageHero kicker={title} title={u.publications_title} desc={u.publications_desc} />
+
+  <section class="section">
+    <div class="container">
+      {featured.length > 0 && (
+        <div class="pub-featured">
+          <h2 class="pub-group__title">★ {u.pub_featured}</h2>
+          <div class="pub-list">
+            {featured.map((p) => <PaperItem paper={p} lang={L} showAbstract />)}
+          </div>
+        </div>
+      )}
+
+      <div class="pub-filters" role="tablist">
+        {filters.map((f) => (
+          <button class="pub-filter is-active" data-filter={f.key} type="button">
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      <div class="pub-list" id="pub-list">
+        {all.map((p) => (
+          <div data-type={p.data.type} class="pub-entry">
+            <PaperItem paper={p} lang={L} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pub-featured {
+    margin-bottom: 40px;
+    background: var(--color-accent-soft);
+    border: 1px solid #f0dfae;
+    border-radius: var(--radius);
+    padding: 28px 28px 8px;
+  }
+  .pub-group__title {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #925f07;
+  }
+  .pub-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .pub-filter {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pub-filter:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+  .pub-filter.is-active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .pub-entry.is-hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.pub-filter');
+  const entries = document.querySelectorAll<HTMLElement>('.pub-entry');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const key = btn.dataset.filter;
+      entries.forEach((e) => {
+        const show = key === 'all' || e.dataset.type === key;
+        e.classList.toggle('is-hidden', !show);
+      });
+    });
+  });
+</script>

@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../i18n/ui';
+import { isLang } from '../../i18n/utils';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+export async function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const projects = await getCollection('projects');
+projects.sort((a, b) => a.data.order - b.data.order);
+
+const ongoing = projects.filter((p) => p.data.status === 'ongoing');
+const completed = projects.filter((p) => p.data.status === 'completed');
+
+const title = isZh ? lab.name_zh : lab.name_en;
+---
+
+<Layout lang={L} title={u.research_title} description={u.research_desc} active="research">
+  <PageHero kicker={title} title={u.research_title} desc={u.research_desc} />
+
+  <section class="section">
+    <div class="container">
+      {ongoing.length > 0 && (
+        <div class="research-group">
+          <h2 class="research-group__title">{u.research_ongoing}</h2>
+          <div class="grid grid--3">
+            {ongoing.map((p) => <ProjectCard project={p} lang={L} />)}
+          </div>
+        </div>
+      )}
+
+      {completed.length > 0 && (
+        <div class="research-group">
+          <h2 class="research-group__title">{u.research_completed}</h2>
+          <div class="grid grid--3">
+            {completed.map((p) => <ProjectCard project={p} lang={L} />)}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .research-group {
+    margin-bottom: 48px;
+  }
+  .research-group:last-child {
+    margin-bottom: 0;
+  }
+  .research-group__title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-primary);
+    display: inline-block;
+  }
+</style>

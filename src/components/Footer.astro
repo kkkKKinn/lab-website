@@ -1,0 +1,52 @@
+---
+import { lab, navItems, type Lang } from '../i18n/ui';
+import { navHref, BASE } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = lang === 'zh';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <div class="site-footer__title">{t ? lab.name_zh : lab.name_en}</div>
+        <p style="max-width:340px; line-height:1.8; font-size:14.5px;">
+          {t
+            ? '以智能感知与人工智能服务现代农业，欢迎交流与合作。'
+            : 'Serving modern agriculture with intelligent sensing and AI. Welcome to connect and collaborate.'}
+        </p>
+      </div>
+      <div>
+        <div class="site-footer__title">{t ? '导航' : 'Navigation'}</div>
+        <ul class="site-footer__links">
+          {navItems.map((item) => (
+            <li>
+              <a href={navHref(lang, item.href)}>
+                {lang === 'zh' ? item.label_zh : item.label_en}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <div class="site-footer__title">{t ? '联系方式' : 'Contact'}</div>
+        <ul class="site-footer__links">
+          <li>{t ? lab.address_zh : lab.address_en}</li>
+          <li><a href={`mailto:${lab.email}`}>{lab.email}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© {year} {t ? lab.name_zh : lab.name_en}. {t ? '版权所有' : 'All rights reserved.'}</span>
+      <span>
+        <a href={`${BASE}admin/`} target="_blank" rel="noopener">{t ? '管理后台' : 'Admin'}</a>
+      </span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../i18n/ui';
+import { isLang } from '../../i18n/utils';
+import PageHero from '../../components/PageHero.astro';
+import PeopleCard from '../../components/PeopleCard.astro';
+
+export async function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const people = await getCollection('people');
+people.sort((a, b) => a.data.order - b.data.order);
+
+const roleOrder = ['director', 'faculty', 'postdoc', 'student', 'collaborator'] as const;
+const groups = roleOrder
+  .map((role) => ({
+    role,
+    label: u.roles[role],
+    members: people.filter((p) => p.data.role === role),
+  }))
+  .filter((g) => g.members.length > 0);
+
+const title = isZh ? lab.name_zh : lab.name_en;
+---
+
+<Layout lang={L} title={u.people_title} description={u.people_desc} active="people">
+  <PageHero kicker={title} title={u.people_title} desc={u.people_desc} />
+
+  <section class="section">
+    <div class="container">
+      {groups.map((g) => (
+        <div class="people-group">
+          <h2 class="people-group__title">{g.label}</h2>
+          <div class="grid grid--3">
+            {g.members.map((p) => <PeopleCard person={p} lang={L} />)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .people-group {
+    margin-bottom: 48px;
+  }
+  .people-group:last-child {
+    margin-bottom: 0;
+  }
+  .people-group__title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-primary);
+    display: inline-block;
+  }
+</style>

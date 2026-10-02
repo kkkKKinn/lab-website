@@ -1,0 +1,111 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { asset } from '../i18n/utils';
+
+interface Props {
+  person: CollectionEntry<'people'>;
+  lang: Lang;
+}
+
+const { person, lang } = Astro.props;
+const d = person.data;
+const isZh = lang === 'zh';
+const name = isZh ? d.name_zh : d.name_en;
+const title = isZh ? d.title_zh : d.title_en;
+const bio = isZh ? d.bio_zh : d.bio_en;
+const research = isZh ? d.research_zh : d.research_en;
+const roleLabel = t(lang).roles[d.role];
+const initial = (isZh ? d.name_zh : d.name_en).charAt(0).toUpperCase();
+---
+
+<article class="card person-card">
+  <div class="person-card__top">
+    {d.avatar ? (
+      <img class="person-card__avatar" src={asset(d.avatar)} alt={name} loading="lazy" />
+    ) : (
+      <div class="person-card__avatar person-card__avatar--initial">{initial}</div>
+    )}
+    <div>
+      <h3 class="person-card__name">{name}</h3>
+      <div class="person-card__title">{title}</div>
+      <span class="tag">{roleLabel}</span>
+    </div>
+  </div>
+  <p class="person-card__bio">{bio}</p>
+  <div class="person-card__research">
+    <strong>{t(lang).researchInterests}</strong>：{research}
+  </div>
+  <div class="person-card__links">
+    {d.email && (
+      <a href={`mailto:${d.email}`} class="person-card__link">
+        ✉ {d.email}
+      </a>
+    )}
+    {d.homepage && (
+      <a href={d.homepage} target="_blank" rel="noopener" class="person-card__link">
+        ↗ {isZh ? '个人主页' : 'Homepage'}
+      </a>
+    )}
+  </div>
+</article>
+
+<style>
+  .person-card__top {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .person-card__avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--color-border);
+  }
+  .person-card__avatar--initial {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--color-primary), #2f7d46);
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    border: none;
+  }
+  .person-card__name {
+    font-size: 19px;
+    margin-bottom: 2px;
+  }
+  .person-card__title {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .person-card__bio {
+    color: var(--color-text-muted);
+    font-size: 14.5px;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .person-card__research {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .person-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 12px;
+  }
+  .person-card__link {
+    font-size: 13.5px;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+</style>

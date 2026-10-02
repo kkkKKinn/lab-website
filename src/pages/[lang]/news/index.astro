@@ -1,0 +1,52 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../../i18n/ui';
+import { isLang } from '../../../i18n/utils';
+import PageHero from '../../../components/PageHero.astro';
+import NewsCard from '../../../components/NewsCard.astro';
+
+export async function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const news = await getCollection('news');
+news.sort((a, b) => {
+  if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
+  return b.data.date.getTime() - a.data.date.getTime();
+});
+
+const title = isZh ? lab.name_zh : lab.name_en;
+---
+
+<Layout lang={L} title={u.news_title} description={u.news_desc} active="news">
+  <PageHero kicker={title} title={u.news_title} desc={u.news_desc} />
+
+  <section class="section">
+    <div class="container">
+      {news.length > 0 ? (
+        <div class="news-list">
+          {news.map((n) => <NewsCard news={n} lang={L} />)}
+        </div>
+      ) : (
+        <p class="empty">{isZh ? '暂无新闻。' : 'No news yet.'}</p>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .news-list {
+    border-top: 1px solid var(--color-border);
+  }
+  .empty {
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: 60px 0;
+  }
+</style>

@@ -1,0 +1,93 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { lab, t } from '../../../i18n/ui';
+import { isLang, navHref, asset } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const news = await getCollection('news');
+  return news.flatMap((n) => {
+    const slug = n.id.replace(/\.md$/, '');
+    return [
+      { params: { lang: 'zh', slug } },
+      { params: { lang: 'en', slug } },
+    ];
+  });
+}
+
+const { lang, slug } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const news = await getCollection('news');
+const entry = news.find((n) => n.id.replace(/\.md$/, '') === slug);
+
+if (!entry) {
+  return Astro.redirect(navHref(L, '/news'), 302);
+}
+
+const d = entry.data;
+const title = isZh ? d.title_zh : d.title_en;
+const summary = isZh ? d.summary_zh : d.summary_en;
+const body = isZh ? d.body_zh : d.body_en;
+const paragraphs = (body || '').split(/\n+/).filter((p) => p.trim());
+const dateStr = d.date.toLocaleDateString(isZh ? 'zh-CN' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const labName = isZh ? lab.name_zh : lab.name_en;
+---
+
+<Layout lang={L} title={title} description={summary} active="news">
+  <article class="news-detail">
+    <div class="container">
+      <a href={navHref(L, '/news')} class="back">← {u.news_back}</a>
+      <div class="news-detail__head">
+        {d.pinned && <span class="tag tag--accent">{u.news_pinned}</span>}
+        <h1 class="news-detail__title">{title}</h1>
+        <div class="news-detail__meta">{dateStr} · {labName}</div>
+      </div>
+      {d.cover && <img class="news-detail__cover" src={asset(d.cover)} alt={title} />}
+      <div class="news-detail__body">
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .news-detail {
+    padding: 48px 0 80px;
+  }
+  .back {
+    display: inline-block;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .news-detail__head {
+    margin-bottom: 28px;
+  }
+  .news-detail__title {
+    font-size: clamp(28px, 4vw, 38px);
+    margin: 12px 0 12px;
+  }
+  .news-detail__meta {
+    color: var(--color-text-muted);
+    font-size: 14.5px;
+  }
+  .news-detail__cover {
+    width: 100%;
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+  }
+  .news-detail__body {
+    max-width: 760px;
+    font-size: 16.5px;
+    line-height: 1.9;
+  }
+  .news-detail__body p {
+    margin-bottom: 16px;
+  }
+</style>

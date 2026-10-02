@@ -1,0 +1,50 @@
+---
+import { lab, navItems, langNames, type Lang } from '../i18n/ui';
+import { localizedPath, navHref } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  active?: string;
+}
+
+const { lang, active } = Astro.props;
+const otherLang: Lang = lang === 'zh' ? 'en' : 'zh';
+const zhPath = localizedPath(Astro.url.pathname, 'zh');
+const enPath = localizedPath(Astro.url.pathname, 'en');
+const brandName = lang === 'zh' ? lab.short_zh : lab.short_en;
+const brandOrg = lang === 'zh' ? lab.org_zh : lab.org_en;
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href={navHref(lang, '/')} class="brand">
+      <span class="brand__logo">A</span>
+      <span>
+        <span class="brand__name">{brandName}</span>
+        <span class="brand__sub">{brandOrg}</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav">
+      {navItems.map((item) => (
+        <a
+          href={navHref(lang, item.href)}
+          class:list={[
+            'nav__link',
+            { 'is-active': active === item.key || (item.key === 'home' && !active) },
+          ]}
+        >
+          {lang === 'zh' ? item.label_zh : item.label_en}
+        </a>
+      ))}
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" role="group" aria-label={langNames[lang]}>
+        <a href={zhPath} class:list={[{ 'is-active': lang === 'zh' }]}>中</a>
+        <a href={enPath} class:list={[{ 'is-active': lang === 'en' }]}>EN</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>

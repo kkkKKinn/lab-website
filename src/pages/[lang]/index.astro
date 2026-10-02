@@ -1,0 +1,278 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../i18n/ui';
+import { navHref, isLang } from '../../i18n/utils';
+import PeopleCard from '../../components/PeopleCard.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import PartnerCard from '../../components/PartnerCard.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const [people, papers, projects, equipment, partners, news] = await Promise.all([
+  getCollection('people'),
+  getCollection('papers'),
+  getCollection('projects'),
+  getCollection('equipment'),
+  getCollection('partners'),
+  getCollection('news'),
+]);
+
+people.sort((a, b) => a.data.order - b.data.order);
+projects.sort((a, b) => a.data.order - b.data.order);
+partners.sort((a, b) => a.data.order - b.data.order);
+news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const featuredPeople = people.slice(0, 4);
+const ongoingProjects = projects.filter((p) => p.data.status === 'ongoing').slice(0, 3);
+const recentNews = news.slice(0, 3);
+const labName = isZh ? lab.name_zh : lab.name_en;
+const labOrg = isZh ? lab.org_zh : lab.org_en;
+---
+
+<Layout lang={L} title={labName} active="home">
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__inner">
+        <div class="hero__org">{labOrg}</div>
+        <h1 class="hero__title">{u.home_hero_title}</h1>
+        <p class="hero__sub">{u.home_hero_sub}</p>
+        <div class="hero__actions">
+          <a href={navHref(L, '/research')} class="btn btn--primary">{u.home_hero_cta}</a>
+          <a href={navHref(L, '/people')} class="btn btn--ghost hero__ghost">{u.home_hero_cta2}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 数据统计 ===== -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats__grid">
+        <div class="stat">
+          <div class="stat__num">{people.length}</div>
+          <div class="stat__label">{u.home_stats_people}</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">{papers.length}</div>
+          <div class="stat__label">{u.home_stats_papers}</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">{ongoingProjects.length}</div>
+          <div class="stat__label">{u.home_stats_projects}</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">{equipment.length}</div>
+          <div class="stat__label">{u.home_stats_equipment}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 实验室简介 ===== -->
+  <section class="section">
+    <div class="container about">
+      <div class="about__head">
+        <div class="section__kicker">{labName}</div>
+        <h2 class="section__title">{u.home_welcome_title}</h2>
+        <p class="section__desc">{u.home_welcome_body}</p>
+      </div>
+      <div class="about__body">
+        <p>{u.home_welcome_body}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 研究方向 ===== -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__head">
+        <div class="section__kicker">Research</div>
+        <h2 class="section__title">{u.home_research_title}</h2>
+        <p class="section__desc">{u.home_research_desc}</p>
+      </div>
+      <div class="grid grid--3">
+        {ongoingProjects.map((p) => <ProjectCard project={p} lang={L} />)}
+      </div>
+      <div class="section__more">
+        <a href={navHref(L, '/research')} class="btn btn--ghost">{u.viewAll}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 新闻动态 ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <div class="section__kicker">News</div>
+        <h2 class="section__title">{u.home_news_title}</h2>
+        <p class="section__desc">{u.home_news_desc}</p>
+      </div>
+      <div class="news-list">
+        {recentNews.map((n) => <NewsCard news={n} lang={L} />)}
+      </div>
+      <div class="section__more">
+        <a href={navHref(L, '/news')} class="btn btn--ghost">{u.viewAll}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 团队成员 ===== -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__head">
+        <div class="section__kicker">People</div>
+        <h2 class="section__title">{u.home_people_title}</h2>
+      </div>
+      <div class="grid grid--4">
+        {featuredPeople.map((p) => <PeopleCard person={p} lang={L} />)}
+      </div>
+      <div class="section__more">
+        <a href={navHref(L, '/people')} class="btn btn--ghost">{u.viewAll}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 合作伙伴 ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <div class="section__kicker">Partners</div>
+        <h2 class="section__title">{u.home_partners_title}</h2>
+      </div>
+      <div class="grid grid--4">
+        {partners.map((p) => <PartnerCard partner={p} lang={L} />)}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(1000px 500px at 85% -10%, rgba(202, 138, 4, 0.25), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(47, 125, 70, 0.35), transparent 60%),
+      linear-gradient(135deg, #0d3b20 0%, #14532d 55%, #1c6b3a 100%);
+    color: #fff;
+    padding: 96px 0 110px;
+    overflow: hidden;
+  }
+  .hero__inner {
+    max-width: 760px;
+  }
+  .hero__org {
+    display: inline-block;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #fcd34d;
+    margin-bottom: 18px;
+  }
+  .hero__title {
+    color: #fff;
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.15;
+    margin-bottom: 20px;
+    font-family: var(--font-serif);
+  }
+  .hero__sub {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.75;
+    margin-bottom: 32px;
+    max-width: 640px;
+  }
+  .hero__actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .hero__ghost {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+  .hero__ghost:hover {
+    background: #fff;
+    color: var(--color-primary);
+  }
+
+  .stats {
+    margin-top: -56px;
+    position: relative;
+    z-index: 2;
+  }
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .stat {
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .stat__num {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+  .stat__label {
+    margin-top: 8px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+  }
+
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .about__body {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    color: var(--color-text-muted);
+    font-size: 15.5px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section__more {
+    margin-top: 28px;
+    text-align: center;
+  }
+  .news-list {
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 720px) {
+    .stats__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding: 64px 0 96px;
+    }
+  }
+</style>

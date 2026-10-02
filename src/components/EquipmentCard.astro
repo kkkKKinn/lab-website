@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { asset } from '../i18n/utils';
+
+interface Props {
+  item: CollectionEntry<'equipment'>;
+  lang: Lang;
+}
+
+const { item, lang } = Astro.props;
+const d = item.data;
+const isZh = lang === 'zh';
+const name = isZh ? d.name_zh : d.name_en;
+const category = isZh ? d.category_zh : d.category_en;
+const desc = isZh ? d.desc_zh : d.desc_en;
+---
+
+<article class="card equipment-card">
+  {d.image && <img class="equipment-card__img" src={asset(d.image)} alt={name} loading="lazy" />}
+  <div class="equipment-card__body">
+    <span class="tag tag--accent">{category}</span>
+    <h3 class="equipment-card__name">{name}</h3>
+    <div class="equipment-card__model">
+      <span>{t(lang).equipment_model}</span>：{d.model}
+    </div>
+    <p class="equipment-card__desc">{desc}</p>
+  </div>
+</article>
+
+<style>
+  .equipment-card {
+    padding: 0;
+    overflow: hidden;
+  }
+  .equipment-card__img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: var(--color-primary-light);
+  }
+  .equipment-card__body {
+    padding: 20px 22px;
+  }
+  .equipment-card__name {
+    font-size: 17px;
+    margin: 10px 0 6px;
+  }
+  .equipment-card__model {
+    font-size: 13.5px;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+  }
+  .equipment-card__model span {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .equipment-card__desc {
+    color: var(--color-text-muted);
+    font-size: 14.5px;
+  }
+</style>

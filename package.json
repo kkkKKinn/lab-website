@@ -1,0 +1,16 @@
+{
+  "name": "agri-lab-website",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "农业智能实验室主页（中英双语 + Decap CMS 管理）",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.12.0"
+  }
+}

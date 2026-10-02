@@ -1,0 +1,41 @@
+---
+interface Props {
+  kicker?: string;
+  title: string;
+  desc?: string;
+}
+
+const { kicker, title, desc } = Astro.props;
+---
+
+<div class="page-hero">
+  <div class="container">
+    {kicker && <div class="section__kicker">{kicker}</div>}
+    <h1 class="page-hero__title">{title}</h1>
+    {desc && <p class="page-hero__desc">{desc}</p>}
+  </div>
+</div>
+
+<style>
+  .page-hero {
+    background: linear-gradient(180deg, var(--color-primary) 0%, #0d3b20 100%);
+    color: #fff;
+    padding: 64px 0;
+  }
+  .page-hero :global(.section__kicker) {
+    color: #fcd34d;
+  }
+  .page-hero :global(.section__kicker)::before {
+    background: #fcd34d;
+  }
+  .page-hero__title {
+    font-size: clamp(30px, 4vw, 42px);
+    color: #fff;
+  }
+  .page-hero__desc {
+    margin-top: 12px;
+    max-width: 680px;
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.82);
+  }
+</style>

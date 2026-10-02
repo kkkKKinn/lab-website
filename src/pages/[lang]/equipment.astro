@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../i18n/ui';
+import { isLang } from '../../i18n/utils';
+import PageHero from '../../components/PageHero.astro';
+import EquipmentCard from '../../components/EquipmentCard.astro';
+
+export async function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const items = await getCollection('equipment');
+items.sort((a, b) => a.data.order - b.data.order);
+
+const title = isZh ? lab.name_zh : lab.name_en;
+---
+
+<Layout lang={L} title={u.equipment_title} description={u.equipment_desc} active="equipment">
+  <PageHero kicker={title} title={u.equipment_title} desc={u.equipment_desc} />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {items.map((e) => <EquipmentCard item={e} lang={L} />)}
+      </div>
+    </div>
+  </section>
+</Layout>

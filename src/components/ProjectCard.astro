@@ -1,0 +1,71 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { t, type Lang } from '../i18n/ui';
+import { asset } from '../i18n/utils';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+}
+
+const { project, lang } = Astro.props;
+const d = project.data;
+const isZh = lang === 'zh';
+const title = isZh ? d.title_zh : d.title_en;
+const summary = isZh ? d.summary_zh : d.summary_en;
+const fund = isZh ? d.fund_zh : d.fund_en;
+const statusLabel = d.status === 'ongoing' ? (isZh ? '在研' : 'Ongoing') : (isZh ? '已结题' : 'Completed');
+---
+
+<article class="card project-card">
+  {d.image && <img class="project-card__img" src={asset(d.image)} alt={title} loading="lazy" />}
+  <div class="project-card__body">
+    <div class="project-card__head">
+      <h3 class="project-card__title">{title}</h3>
+      <span class:list={['tag', d.status === 'ongoing' ? 'tag--accent' : '']}>{statusLabel}</span>
+    </div>
+    <p class="project-card__summary">{summary}</p>
+    {fund && (
+      <div class="project-card__fund">
+        <span>{t(lang).project_fund}：</span>{fund}
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-card__img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+  }
+  .project-card__body {
+    padding: 20px 22px;
+  }
+  .project-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .project-card__title {
+    font-size: 17px;
+  }
+  .project-card__summary {
+    color: var(--color-text-muted);
+    font-size: 14.5px;
+    margin-bottom: 12px;
+  }
+  .project-card__fund {
+    font-size: 13.5px;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+</style>

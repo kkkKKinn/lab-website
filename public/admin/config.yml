@@ -1,0 +1,172 @@
+# ==========================================================================
+# 内容管理后台配置（Decap CMS / Sveltia CMS 兼容）
+# 管理员访问：https://你的域名/admin/
+# 使用前请把下面的 owner/repo 改成你自己的 GitHub 仓库，如 njau-agrilab/website
+# ==========================================================================
+
+backend:
+  name: github
+  repo: kkkkkinn/lab-website
+  branch: main
+  # 使用 GitHub 时，登录会走 GitHub OAuth 授权（Sveltia CMS 无需额外配置 OAuth 服务）
+
+# 上传的图片/文件保存位置（对应 public/media，构建后访问路径为 /media/...）
+media_folder: public/media
+public_folder: /media
+
+# 网站地址（用于生成预览链接）
+site_url: https://kkkkkinn.github.io/lab-website
+display_url: https://kkkkkinn.github.io/lab-website
+
+# 管理界面语言
+locale: zh_Hans
+
+# 默认每页条数
+pagination: 20
+
+collections:
+  # ================= 团队成员 =================
+  - name: people
+    label: 团队成员
+    label_singular: 成员
+    folder: src/content/people
+    create: true
+    slug: "{{name_en | slugify}}"
+    sortable_fields: ["order", "name_en"]
+    fields:
+      - { name: name_zh, label: 姓名（中文）, widget: string }
+      - { name: name_en, label: 姓名（英文）, widget: string }
+      - { name: title_zh, label: 职称（中文）, widget: string }
+      - { name: title_en, label: 职称（英文）, widget: string }
+      - name: role
+        label: 角色
+        widget: select
+        default: student
+        options:
+          - { label: 实验室负责人, value: director }
+          - { label: 教师 / 研究员, value: faculty }
+          - { label: 博士后, value: postdoc }
+          - { label: 研究生, value: student }
+          - { label: 合作专家, value: collaborator }
+      - { name: bio_zh, label: 简介（中文）, widget: text }
+      - { name: bio_en, label: 简介（英文）, widget: text }
+      - { name: research_zh, label: 研究方向（中文）, widget: string }
+      - { name: research_en, label: 研究方向（英文）, widget: string }
+      - { name: email, label: 邮箱, widget: string, required: false }
+      - { name: avatar, label: 头像, widget: image, required: false }
+      - { name: homepage, label: 个人主页链接, widget: string, required: false }
+      - { name: order, label: 排序（数字越小越靠前）, widget: number, default: 0, value_type: int, required: false }
+
+  # ================= 论文成果 =================
+  - name: papers
+    label: 论文成果
+    label_singular: 论文
+    folder: src/content/papers
+    create: true
+    slug: "{{title_en | slugify}}"
+    sortable_fields: ["year", "title_en"]
+    fields:
+      - { name: title_zh, label: 标题（中文）, widget: string }
+      - { name: title_en, label: 标题（英文）, widget: string }
+      - { name: authors, label: 作者（英文，用逗号分隔）, widget: string }
+      - { name: year, label: 年份, widget: number, value_type: int }
+      - { name: venue, label: 期刊 / 会议名称, widget: string }
+      - name: type
+        label: 类型
+        widget: select
+        default: journal
+        options:
+          - { label: 期刊论文, value: journal }
+          - { label: 会议论文, value: conference }
+          - { label: 专利, value: patent }
+          - { label: 其他, value: other }
+      - { name: doi, label: DOI（不含 https://doi.org/ 前缀）, widget: string, required: false }
+      - { name: pdf, label: PDF 文件, widget: file, required: false }
+      - { name: abstract_zh, label: 摘要（中文）, widget: text, required: false }
+      - { name: abstract_en, label: 摘要（英文）, widget: text, required: false }
+      - { name: featured, label: 设为代表成果（首页突出展示）, widget: boolean, default: false, required: false }
+
+  # ================= 研究项目 =================
+  - name: projects
+    label: 研究项目
+    label_singular: 项目
+    folder: src/content/projects
+    create: true
+    slug: "{{title_en | slugify}}"
+    sortable_fields: ["order", "title_en"]
+    fields:
+      - { name: title_zh, label: 项目名称（中文）, widget: string }
+      - { name: title_en, label: 项目名称（英文）, widget: string }
+      - { name: summary_zh, label: 项目简介（中文）, widget: text }
+      - { name: summary_en, label: 项目简介（英文）, widget: text }
+      - { name: fund_zh, label: 资助来源（中文）, widget: string, required: false }
+      - { name: fund_en, label: 资助来源（英文）, widget: string, required: false }
+      - { name: image, label: 项目配图, widget: image, required: false }
+      - name: status
+        label: 状态
+        widget: select
+        default: ongoing
+        options:
+          - { label: 在研, value: ongoing }
+          - { label: 已结题, value: completed }
+      - { name: order, label: 排序, widget: number, default: 0, value_type: int, required: false }
+
+  # ================= 仪器设备 =================
+  - name: equipment
+    label: 仪器设备
+    label_singular: 设备
+    folder: src/content/equipment
+    create: true
+    slug: "{{name_en | slugify}}"
+    sortable_fields: ["order", "name_en"]
+    fields:
+      - { name: name_zh, label: 设备名称（中文）, widget: string }
+      - { name: name_en, label: 设备名称（英文）, widget: string }
+      - { name: model, label: 型号, widget: string }
+      - { name: category_zh, label: 分类（中文）, widget: string, hint: 如：田间采集 / 室内检测 / 计算资源 }
+      - { name: category_en, label: 分类（英文）, widget: string }
+      - { name: desc_zh, label: 描述（中文）, widget: text }
+      - { name: desc_en, label: 描述（英文）, widget: text }
+      - { name: image, label: 设备图片, widget: image, required: false }
+      - { name: order, label: 排序, widget: number, default: 0, value_type: int, required: false }
+
+  # ================= 合作单位 =================
+  - name: partners
+    label: 合作单位
+    label_singular: 合作单位
+    folder: src/content/partners
+    create: true
+    slug: "{{name_en | slugify}}"
+    sortable_fields: ["order", "name_en"]
+    fields:
+      - { name: name_zh, label: 单位名称（中文）, widget: string }
+      - { name: name_en, label: 单位名称（英文）, widget: string }
+      - { name: logo, label: 单位 Logo, widget: image, required: false }
+      - { name: url, label: 官网链接, widget: string, required: false }
+      - { name: desc_zh, label: 合作说明（中文）, widget: text, required: false }
+      - { name: desc_en, label: 合作说明（英文）, widget: text, required: false }
+      - { name: order, label: 排序, widget: number, default: 0, value_type: int, required: false }
+
+  # ================= 新闻动态 =================
+  - name: news
+    label: 新闻动态
+    label_singular: 新闻
+    folder: src/content/news
+    create: true
+    slug: "{{year}}-{{month}}-{{title_en | slugify}}"
+    sortable_fields: ["date", "title_en"]
+    fields:
+      - { name: title_zh, label: 标题（中文）, widget: string }
+      - { name: title_en, label: 标题（英文）, widget: string }
+      - name: date
+        label: 日期
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - { name: summary_zh, label: 摘要（中文）, widget: text, required: false }
+      - { name: summary_en, label: 摘要（英文）, widget: text, required: false }
+      - { name: body_zh, label: 正文（中文）, widget: text, required: false }
+      - { name: body_en, label: 正文（英文）, widget: text, required: false }
+      - { name: cover, label: 封面图, widget: image, required: false }
+      - { name: pinned, label: 置顶, widget: boolean, default: false, required: false }
