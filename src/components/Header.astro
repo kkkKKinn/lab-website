@@ -18,11 +18,7 @@ const brandName = lang === 'zh' ? lab.short_zh : lab.short_en;
 <header class="site-header">
   <div class="container site-header__inner">
        <a href={navHref(lang, '/')} class="brand">
-      <img
-        src={asset('/images/logo.png')}
-        alt={brandName}
-        style="width:104px;height:40px;object-fit:contain;flex-shrink:0;"
-      />
+      <img src={asset('/images/logo.png')} alt={brandName} class="brand__logo-img" />
       <span class="brand__name">{brandName}</span>
     </a>
 
