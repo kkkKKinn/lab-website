@@ -39,6 +39,50 @@ const ongoingProjects = projects.filter((p) => p.data.status === 'ongoing').slic
 const recentNews = news.slice(0, 3);
 const labName = isZh ? lab.name_zh : lab.name_en;
 const labOrg = isZh ? lab.org_zh : lab.org_en;
+
+// —— 站内搜索索引（按当前语言生成） ——
+const typeLabel = (zh: string, en: string) => (isZh ? zh : en);
+const searchIndex = [
+  ...people.map((p) => ({
+    typeLabel: typeLabel('成员', 'People'),
+    title: isZh ? p.data.name_zh : p.data.name_en,
+    desc: isZh ? p.data.title_zh : p.data.title_en,
+    url: navHref(L, '/people'),
+  })),
+  ...papers.map((p) => ({
+    typeLabel: typeLabel('论文', 'Publications'),
+    title: isZh ? p.data.title_zh : p.data.title_en,
+    desc: `${p.data.authors} · ${p.data.year} · ${p.data.venue}`,
+    url: navHref(L, '/publications'),
+  })),
+  ...projects.map((p) => ({
+    typeLabel: typeLabel('项目', 'Projects'),
+    title: isZh ? p.data.title_zh : p.data.title_en,
+    desc: isZh ? p.data.summary_zh : p.data.summary_en,
+    url: navHref(L, '/research'),
+  })),
+  ...equipment.map((e) => ({
+    typeLabel: typeLabel('设备', 'Equipment'),
+    title: isZh ? e.data.name_zh : e.data.name_en,
+    desc: isZh ? e.data.desc_zh : e.data.desc_en,
+    url: navHref(L, '/equipment'),
+  })),
+  ...partners.map((p) => ({
+    typeLabel: typeLabel('合作', 'Partners'),
+    title: isZh ? p.data.name_zh : p.data.name_en,
+    desc: isZh ? p.data.desc_zh : p.data.desc_en,
+    url: navHref(L, '/partners'),
+  })),
+  ...news.map((n) => {
+    const slug = n.id.replace(/\.md$/, '');
+    return {
+      typeLabel: typeLabel('新闻', 'News'),
+      title: isZh ? n.data.title_zh : n.data.title_en,
+      desc: isZh ? n.data.summary_zh : n.data.summary_en,
+      url: navHref(L, `/news/${slug}`),
+    };
+  }),
+];
 ---
 
 <Layout lang={L} title={labName} active="home">
@@ -76,7 +120,22 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
         <p class="section__desc">{u.home_welcome_body}</p>
       </div>
       <div class="about__body">
-        <p>{u.home_welcome_body}</p>
+        <form class="site-search" role="search" autocomplete="off" onsubmit="return false">
+          <svg class="site-search__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+            <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="search"
+            id="siteSearchInput"
+            class="site-search__input"
+            placeholder={isZh ? '搜索成员、论文、项目、新闻…' : 'Search members, papers, projects, news…'}
+            aria-label={isZh ? '站内搜索' : 'Site search'}
+            data-empty={isZh ? '未找到相关结果' : 'No results found'}
+          />
+          <ul class="site-search__results" id="siteSearchResults" hidden></ul>
+        </form>
+        <script type="application/json" id="searchIndexData" set:html={JSON.stringify(searchIndex)}></script>
       </div>
     </div>
   </section>
@@ -154,6 +213,50 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
       current = (current + 1) % slides.length;
       slides[current].classList.add('is-active');
     }, 10000);
+  }
+</script>
+
+<script>
+  const input = document.getElementById('siteSearchInput');
+  const results = document.getElementById('siteSearchResults');
+  const dataEl = document.getElementById('searchIndexData');
+  if (input && results && dataEl) {
+    let index = [];
+    try { index = JSON.parse(dataEl.textContent || '[]'); } catch (e) { index = []; }
+    const emptyText = input.getAttribute('data-empty') || '未找到相关结果';
+
+    const close = () => { results.innerHTML = ''; results.hidden = true; };
+    const render = (q) => {
+      const query = (q || '').trim().toLowerCase();
+      if (!query) { close(); return; }
+      const matches = index
+        .filter((it) => (it.title + ' ' + (it.desc || '') + ' ' + it.typeLabel).toLowerCase().indexOf(query) !== -1)
+        .slice(0, 8);
+      if (matches.length === 0) {
+        results.innerHTML = '<li class="site-search__empty">' + emptyText + '</li>';
+      } else {
+        results.innerHTML = matches.map((m) =>
+          '<li><a href="' + m.url + '" class="site-search__item">' +
+            '<span class="site-search__type">' + m.typeLabel + '</span>' +
+            '<span class="site-search__title">' + m.title + '</span>' +
+            '<span class="site-search__desc">' + (m.desc || '') + '</span>' +
+          '</a></li>'
+        ).join('');
+      }
+      results.hidden = false;
+    };
+
+    input.addEventListener('input', (e) => render(e.target.value));
+    input.addEventListener('focus', (e) => render(e.target.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const first = results.querySelector('a');
+        if (first) window.location.href = first.getAttribute('href') || '';
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.site-search')) close();
+    });
   }
 </script>
 <style>
@@ -250,6 +353,90 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
     color: var(--color-text-muted);
     font-size: 15.5px;
     box-shadow: var(--shadow-sm);
+  }
+  .site-search {
+    position: relative;
+  }
+  .site-search__icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary);
+    pointer-events: none;
+  }
+  .site-search__input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 16px 18px 16px 46px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .site-search__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.15);
+  }
+  .site-search__results {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 8px);
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    z-index: 20;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  .site-search__item {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background 0.15s ease;
+  }
+  .site-search__item:hover {
+    background: rgba(20, 83, 45, 0.08);
+  }
+  .site-search__type {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--color-primary);
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-right: 8px;
+  }
+  .site-search__title {
+    font-weight: 600;
+  }
+  .site-search__desc {
+    display: block;
+    margin-top: 2px;
+    font-size: 13.5px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .site-search__empty {
+    padding: 14px;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 14px;
   }
 
   .section__more {
