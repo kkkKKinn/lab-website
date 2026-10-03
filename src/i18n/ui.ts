@@ -16,7 +16,7 @@ export const lab = {
   name_zh: 'AI作物养分智慧管控实验室',
   name_en: 'AI-Based Intelligent Crop Nutrient Management Lab',
   short_zh: 'AI作物养分智慧管控实验室',
-  short_en: 'AICNM Lab Lab',
+  short_en: 'AICNM  Lab',
   org_zh: '中国农业大学 · 资源与环境学院',
   org_en: 'China Agricultural University · College of Resources and Environmental Sciences',
   address_zh: '北京市海淀区圆明园西路2号',
