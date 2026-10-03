@@ -15,12 +15,16 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="site-footer__grid">
       <div>
-        <div class="site-footer__title">{t ? lab.name_zh : lab.name_en}</div>
-        <p style="max-width:340px; line-height:1.8; font-size:14.5px;">
+        <div class="site-footer__brand">{t ? lab.name_zh : lab.name_en}</div>
+        <p class="site-footer__about">
           {t
-            ? '以智能感知与人工智能服务现代农业，欢迎交流与合作。'
-            : 'Serving modern agriculture with intelligent sensing and AI. Welcome to connect and collaborate.'}
+            ? '以智能感知与人工智能服务现代农业，聚焦作物养分智慧管控，欢迎交流与合作。'
+            : 'Serving modern agriculture with intelligent sensing and AI, focused on smart crop nutrient management. Welcome to connect and collaborate.'}
         </p>
+        <div class="site-footer__social">
+          <a href={`mailto:${lab.email}`} aria-label="Email">✉</a>
+          <a href={navHref(lang, '/news')} aria-label="News">📰</a>
+        </div>
       </div>
       <div>
         <div class="site-footer__title">{t ? '导航' : 'Navigation'}</div>
@@ -35,6 +39,15 @@ const year = new Date().getFullYear();
         </ul>
       </div>
       <div>
+        <div class="site-footer__title">{t ? '资源' : 'Resources'}</div>
+        <ul class="site-footer__links">
+          <li><a href={navHref(lang, '/news')}>{t ? '新闻动态' : 'News'}</a></li>
+          <li><a href={navHref(lang, '/publications')}>{t ? '论文成果' : 'Publications'}</a></li>
+          <li><a href={navHref(lang, '/research')}>{t ? '研究方向' : 'Research'}</a></li>
+          <li><a href={`${BASE}admin/`} target="_blank" rel="noopener">{t ? '管理后台' : 'Admin'}</a></li>
+        </ul>
+      </div>
+      <div>
         <div class="site-footer__title">{t ? '联系方式' : 'Contact'}</div>
         <ul class="site-footer__links">
           <li>{t ? lab.address_zh : lab.address_en}</li>
@@ -44,9 +57,6 @@ const year = new Date().getFullYear();
     </div>
     <div class="site-footer__bottom">
       <span>© {year} {t ? lab.name_zh : lab.name_en}. {t ? '版权所有' : 'All rights reserved.'}</span>
-      <span>
-        <a href={`${BASE}admin/`} target="_blank" rel="noopener">{t ? '管理后台' : 'Admin'}</a>
-      </span>
     </div>
   </div>
 </footer>

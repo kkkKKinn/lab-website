@@ -26,8 +26,19 @@
 
   /* 尺寸 */
   --container: 1160px;
-  --radius: 14px;
   --radius-sm: 9px;
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  /* 间距比例（全部用 4/8 的倍数，页面才有统一节奏） */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
+
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
   --shadow: 0 4px 16px rgba(16, 24, 40, 0.07);
   --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.12);
@@ -70,6 +81,31 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
+/* 键盘焦点可见性（可访问性） */
+:focus-visible {
+  outline: 3px solid rgba(20, 83, 45, 0.45);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 滚动揭示动画：仅当 JS 给 <html> 加上 .js 后才隐藏，保证禁用 JS 时内容仍可见 */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 ul, ol {
   list-style: none;
 }
@@ -98,8 +134,19 @@ h1, h2, h3, h4 {
 }
 
 .section__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.section__head__text {
   max-width: 720px;
-  margin-bottom: 40px;
+}
+.section__head .btn--ghost {
+  flex-shrink: 0;
+  white-space: nowrap;
+  align-self: center;
 }
 .section__kicker {
   display: inline-flex;
@@ -183,11 +230,19 @@ h1, h2, h3, h4 {
   border-radius: var(--radius);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.project-card__img,
+.news-card__thumb {
+  transition: transform 0.45s ease;
+}
+.card:hover .project-card__img,
+.card:hover .news-card__thumb {
+  transform: scale(1.05);
 }
 
 /* ---------- 徽章 / 标签 ---------- */
@@ -215,6 +270,11 @@ h1, h2, h3, h4 {
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--color-border);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+.site-header.scrolled {
+  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.96);
 }
 .site-header__inner {
   height: 100%;
@@ -322,15 +382,67 @@ h1, h2, h3, h4 {
 }
 .site-footer__grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 36px;
   margin-bottom: 40px;
+}
+.site-footer__brand {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.site-footer__about {
+  max-width: 320px;
+  line-height: 1.8;
+  font-size: 14.5px;
+  color: #a9c2b4;
+  margin-bottom: 18px;
+}
+.site-footer__social {
+  display: flex;
+  gap: 10px;
+}
+.site-footer__social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5d1;
+  font-size: 15px;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.site-footer__social a:hover {
+  background: var(--color-primary);
+  color: #fff;
+  transform: translateY(-2px);
 }
 .site-footer__title {
   color: #fff;
   font-size: 15px;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  padding-left: 12px;
+  position: relative;
+}
+.site-footer__title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+.site-footer__links a {
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+.site-footer__links a:hover {
+  color: #fff;
+  padding-left: 4px;
 }
 .site-footer__links li {
   margin-bottom: 8px;
@@ -353,7 +465,7 @@ h1, h2, h3, h4 {
     grid-template-columns: repeat(2, 1fr);
   }
   .site-footer__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 28px;
   }
 }

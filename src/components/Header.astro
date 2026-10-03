@@ -49,3 +49,13 @@ const brandName = lang === 'zh' ? lab.short_zh : lab.short_en;
     </div>
   </div>
 </header>
+
+<script>
+  // 滚动后导航栏加阴影并加深背景
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

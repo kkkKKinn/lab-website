@@ -21,53 +21,82 @@ const dateStr = d.date.toLocaleDateString(isZh ? 'zh-CN' : 'en-US', {
 const href = `${BASE}${lang}/news/${news.id.replace(/\.md$/, '')}/`;
 ---
 
-<article class="news-card">
-  <div class="news-card__date">
-    <span class="news-card__day">{d.date.getDate()}</span>
-    <span class="news-card__month">
-      {d.date.toLocaleDateString(isZh ? 'zh-CN' : 'en-US', { month: 'short' })}
-      {' '}{d.date.getFullYear()}
-    </span>
-  </div>
-  <div class="news-card__content">
+<article class="card news-card">
+  {d.cover ? (
+    <a href={href} class="news-card__thumb">
+      <img src={asset(d.cover)} alt={title} loading="lazy" />
+    </a>
+  ) : (
+    <div class="news-card__badge">
+      <span class="news-card__day">{d.date.getDate()}</span>
+      <span class="news-card__month">
+        {d.date.toLocaleDateString(isZh ? 'zh-CN' : 'en-US', { month: 'short' })}
+        {' '}{d.date.getFullYear()}
+      </span>
+    </div>
+  )}
+  <div class="news-card__body">
+    <div class="news-card__date">{dateStr}</div>
     <h3 class="news-card__title">
       <a href={href}>{title}</a>
     </h3>
     {summary && <p class="news-card__summary">{summary}</p>}
+    <a href={href} class="news-card__more">{isZh ? '阅读更多' : 'Read more'} →</a>
   </div>
 </article>
 
 <style>
   .news-card {
+    overflow: hidden;
     display: flex;
-    gap: 20px;
-    padding: 22px 0;
-    border-bottom: 1px solid var(--color-border);
+    flex-direction: column;
+    padding: 0;
   }
-  .news-card__date {
-    width: 64px;
-    flex-shrink: 0;
-    text-align: center;
-    background: var(--color-primary-light);
-    border-radius: 12px;
-    padding: 10px 8px;
-    height: fit-content;
+  .news-card__thumb {
+    display: block;
+    width: 100%;
+    height: 168px;
+    overflow: hidden;
+  }
+  .news-card__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .news-card__badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 168px;
+    background: linear-gradient(160deg, var(--color-primary-light), #d8ecdf);
+    color: var(--color-primary);
   }
   .news-card__day {
-    display: block;
-    font-size: 24px;
+    font-size: 34px;
     font-weight: 800;
-    color: var(--color-primary);
     line-height: 1;
   }
   .news-card__month {
-    font-size: 12px;
-    color: var(--color-primary);
+    font-size: 13px;
     font-weight: 600;
+    margin-top: 4px;
+  }
+  .news-card__body {
+    padding: 18px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .news-card__date {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
   }
   .news-card__title {
     font-size: 18px;
-    margin-bottom: 6px;
+    line-height: 1.4;
+    margin-bottom: 8px;
   }
   .news-card__title a {
     color: #0f172a;
@@ -78,5 +107,16 @@ const href = `${BASE}${lang}/news/${news.id.replace(/\.md$/, '')}/`;
   .news-card__summary {
     color: var(--color-text-muted);
     font-size: 14.5px;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-card__more {
+    margin-top: auto;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
   }
 </style>
