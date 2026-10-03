@@ -389,3 +389,30 @@ h1, h2, h3, h4 {
     place-items: center;
   }
 }
+ /* ===== 顶部导航排版修复：禁止文字换行 ===== */
+.brand,
+.nav,
+.nav__link,
+.lang-switch a {
+  white-space: nowrap;
+}
+
+.nav__link {
+  padding: 8px 10px;
+  font-size: 14.5px;
+}
+
+.header-actions {
+  flex-shrink: 0;
+}
+
+/* 手机上缩小实验室名称、隐藏副标题，避免挤压 */
+@media (max-width: 720px) {
+  .brand {
+    font-size: 15px;
+    gap: 8px;
+  }
+  .brand__sub {
+    display: none;
+  }
+}
