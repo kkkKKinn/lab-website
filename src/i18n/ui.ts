@@ -201,3 +201,14 @@ export type UIKey = keyof typeof ui.zh;
 export function t(lang: Lang) {
   return ui[lang];
 }
+
+
+/**
+ * 首页顶部背景轮播图（每 10 秒自动切换一张）。
+ * 在下面数组里加一行，写 '/images/图片文件名'，文件名必须与上传的完全一致。
+ * 不想放图就保持空数组 []。
+ */
+export const heroImages: string[] = [
+  '/images/zhuYe1.jpg',
+  '/images/ZhuYe2.jpg',
+];

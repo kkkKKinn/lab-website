@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { lab, t } from '../../i18n/ui';
-import { navHref, isLang } from '../../i18n/utils';
+import { lab, t, heroImages } from '../../i18n/ui';
+import { navHref, isLang, asset } from '../../i18n/utils';
 import PeopleCard from '../../components/PeopleCard.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import NewsCard from '../../components/NewsCard.astro';
@@ -44,6 +44,16 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
 <Layout lang={L} title={labName} active="home">
   <!-- ===== Hero ===== -->
   <section class="hero">
+{heroImages.length > 0 && (
+      <div class="hero__bg" aria-hidden="true">
+        {heroImages.map((src, i) => (
+          <div
+            class:list={['hero__slide', { 'is-active': i === 0 }]}
+            style={`background-image:url('${asset(src)}')`}
+          />
+        ))}
+      </div>
+    )}
     <div class="container">
       <div class="hero__inner">
         <div class="hero__org">{labOrg}</div>
@@ -159,6 +169,17 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
   </section>
 </Layout>
 
+<script>
+  const slides = Array.from(document.querySelectorAll<HTMLElement>('.hero__slide'));
+  if (slides.length > 1) {
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('is-active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('is-active');
+    }, 10000);
+  }
+</script>
 <style>
   .hero {
     position: relative;
@@ -209,6 +230,36 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
     color: var(--color-primary);
   }
 
+ /* —— 背景轮播 —— */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13, 59, 32, 0.78), rgba(20, 83, 45, 0.62));
+  }
+  .hero__slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 1.6s ease, transform 9s ease;
+  }
+  .hero__slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .hero > .container {
+    position: relative;
+    z-index: 1;
+  }
   .stats {
     margin-top: -56px;
     position: relative;
