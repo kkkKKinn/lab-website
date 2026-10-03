@@ -382,7 +382,7 @@ h1, h2, h3, h4 {
 }
 .site-footer__grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  grid-template-columns: 1.6fr 1fr 1fr;
   gap: 36px;
   margin-bottom: 40px;
 }
@@ -398,26 +398,6 @@ h1, h2, h3, h4 {
   font-size: 14.5px;
   color: #a9c2b4;
   margin-bottom: 18px;
-}
-.site-footer__social {
-  display: flex;
-  gap: 10px;
-}
-.site-footer__social a {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  color: #cbd5d1;
-  font-size: 15px;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-.site-footer__social a:hover {
-  background: var(--color-primary);
-  color: #fff;
-  transform: translateY(-2px);
 }
 .site-footer__title {
   color: #fff;
