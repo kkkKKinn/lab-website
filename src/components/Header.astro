@@ -1,6 +1,6 @@
 ---
 import { lab, navItems, langNames, type Lang } from '../i18n/ui';
-import { localizedPath, navHref，asset } from '../i18n/utils';
+import { localizedPath, navHref,asset } from '../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -21,7 +21,7 @@ const brandName = lang === 'zh' ? lab.short_zh : lab.short_en;
       <img
         src={asset('/images/logo.png')}
         alt={brandName}
-        style="width:40px;height:40px;object-fit:contain;flex-shrink:0;"
+        style="width:104px;height:40px;object-fit:contain;flex-shrink:0;"
       />
       <span class="brand__name">{brandName}</span>
     </a>
