@@ -13,15 +13,15 @@ export const langNames: Record<Lang, string> = {
 
 /** 实验室全局信息（双语） */
 export const lab = {
-  name_zh: '农业智能感知实验室',
-  name_en: 'Agricultural Intelligent Sensing Lab',
-  short_zh: '农业智能感知实验室',
-  short_en: 'Agri Sensing Lab',
-  org_zh: '南京农业大学 · 农学院',
-  org_en: 'Nanjing Agricultural University · College of Agriculture',
-  address_zh: '江苏省南京市玄武区卫岗1号',
-  address_en: 'No.1 Weigang, Xuanwu District, Nanjing, Jiangsu, China',
-  email: 'lab@example.edu.cn',
+  name_zh: 'AI作物养分智慧管控实验室',
+  name_en: 'AI-Based Intelligent Crop Nutrient Management Lab',
+  short_zh: 'AI作物养分智慧管控实验室',
+  short_en: 'AICNM Lab Lab',
+  org_zh: '中国农业大学 · 资源与环境学院',
+  org_en: 'China Agricultural University · College of Resources and Environmental Sciences',
+  address_zh: '北京市海淀区圆明园西路2号',
+  address_en: 'No. 2 Yuanmingyuan West Road, Haidian District, Beijing.',
+  email: '*******',
 };
 
 export interface NavItem {
@@ -57,8 +57,8 @@ export const ui = {
     roles: {
       director: '实验室负责人',
       faculty: '教师 / 研究员',
-      postdoc: '博士后',
-      student: '研究生',
+      postdoc: '博士',
+      student: '研究生/本科生',
       collaborator: '合作专家',
     },
     // 首页
