@@ -209,6 +209,6 @@ export function t(lang: Lang) {
  * 不想放图就保持空数组 []。
  */
 export const heroImages: string[] = [
-  '/images/hero-1.jpg',
-  '/images/hero-2.jpg',
+  '/images/zhuYe1.jpg',
+  '/images/ZhuYe2.jpg',
 ];
