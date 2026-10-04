@@ -25,10 +25,10 @@ function styleFor(i: number, active: number) {
   if (d > n / 2) d -= n;
   if (d < -n / 2) d += n;
   const abs = Math.abs(d);
-  const scale = d === 0 ? 1 : abs >= 2 ? 0.6 : 0.82;
+  const scale = d === 0 ? 1 : abs >= 2 ? 0.6 : 0.8;
   const blur = d === 0 ? 0 : abs >= 2 ? 8 : 4;
   const opacity = d === 0 ? 1 : abs >= 2 ? 0 : 0.55;
-  const tx = d * 60;
+  const tx = d * 58;
   const z = d === 0 ? 30 : Math.max(1, 20 - abs * 5);
   return {
     transform: `translate(-50%, -50%) translateX(${tx}%) scale(${scale})`,
@@ -99,10 +99,10 @@ const items = images.map((img, i) => {
       if (d > n / 2) d -= n;
       if (d < -n / 2) d += n;
       const abs = Math.abs(d);
-      const scale = d === 0 ? 1 : abs >= 2 ? 0.6 : 0.82;
+      const scale = d === 0 ? 1 : abs >= 2 ? 0.6 : 0.8;
       const blur = d === 0 ? 0 : abs >= 2 ? 8 : 4;
       const opacity = d === 0 ? 1 : abs >= 2 ? 0 : 0.55;
-      const tx = d * 60;
+      const tx = d * 58;
       item.style.transform = `translate(-50%, -50%) translateX(${tx}%) scale(${scale})`;
       item.style.filter = blur ? `blur(${blur}px)` : 'none';
       item.style.opacity = String(opacity);
@@ -212,15 +212,15 @@ const items = images.map((img, i) => {
   .coverflow__stage {
     position: relative;
     width: 100%;
-    max-width: 840px;
-    height: 360px;
+    max-width: 920px;
+    height: 440px;
     margin: 0 auto;
   }
   .cf-item {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 52%;
+    width: 60%;
     height: 100%;
     margin: 0;
     border-radius: var(--radius);
@@ -347,12 +347,18 @@ const items = images.map((img, i) => {
     background: rgba(255, 255, 255, 0.3);
   }
 
+  @media (max-width: 960px) {
+    .coverflow__stage {
+      height: 380px;
+    }
+  }
+
   @media (max-width: 720px) {
     .coverflow__stage {
-      height: 250px;
+      height: 300px;
     }
     .cf-item {
-      width: 66%;
+      width: 74%;
     }
     .cf-nav {
       width: 40px;
