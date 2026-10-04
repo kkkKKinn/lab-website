@@ -229,4 +229,9 @@ export const heroImages: string[] = [
 export const galleryImages: { src: string; caption_zh: string; caption_en: string }[] = [
   { src: '/images/zhuYe1.jpg', caption_zh: '小麦田间试验', caption_en: 'Wheat field trial' },
   { src: '/images/ZhuYe2.jpg', caption_zh: '作物长势监测', caption_en: 'Crop growth monitoring' },
+  {
+    src: '/images/gallery/raspberry-pi.jpg',
+    caption_zh: '树莓派边缘计算节点',
+    caption_en: 'Raspberry Pi edge computing node',
+  },
 ];
