@@ -1,12 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { lab, t, heroImages } from '../../i18n/ui';
+import { lab, t, heroImages, galleryImages } from '../../i18n/ui';
 import { navHref, isLang, asset } from '../../i18n/utils';
 import PeopleCard from '../../components/PeopleCard.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import PartnerCard from '../../components/PartnerCard.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
 
 export async function getStaticPaths() {
   return [
@@ -146,8 +147,24 @@ const searchIndex = [
     </div>
   </section>
 
+  <!-- ===== 实验室掠影 ===== -->
+  {galleryImages.length > 0 && (
+    <section class="section section--alt" data-reveal>
+      <div class="container">
+        <div class="section__head">
+          <div class="section__head__text">
+            <div class="section__kicker">Gallery</div>
+            <h2 class="section__title">{u.home_gallery_title}</h2>
+            <p class="section__desc">{u.home_gallery_desc}</p>
+          </div>
+        </div>
+        <PhotoGallery images={galleryImages} lang={L} />
+      </div>
+    </section>
+  )}
+
   <!-- ===== 研究方向 ===== -->
-  <section class="section section--alt" data-reveal>
+  <section class="section" data-reveal>
     <div class="container">
       <div class="section__head">
         <div class="section__head__text">
@@ -164,7 +181,7 @@ const searchIndex = [
   </section>
 
   <!-- ===== 新闻动态 ===== -->
-  <section class="section" data-reveal>
+  <section class="section section--alt" data-reveal>
     <div class="container">
       <div class="section__head">
         <div class="section__head__text">
@@ -181,7 +198,7 @@ const searchIndex = [
   </section>
 
   <!-- ===== 团队成员 ===== -->
-  <section class="section section--alt" data-reveal>
+  <section class="section" data-reveal>
     <div class="container">
       <div class="section__head">
         <div class="section__head__text">
@@ -197,7 +214,7 @@ const searchIndex = [
   </section>
 
   <!-- ===== 合作伙伴 ===== -->
-  <section class="section" data-reveal>
+  <section class="section section--alt" data-reveal>
     <div class="container">
       <div class="section__head">
         <div class="section__head__text">

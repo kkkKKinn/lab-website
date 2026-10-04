@@ -78,6 +78,8 @@ export const ui = {
     home_research_desc: '围绕智能农业的核心科学问题，开展多学科交叉研究。',
     home_news_title: '新闻动态',
     home_news_desc: '实验室最新进展与活动。',
+    home_gallery_title: '实验室掠影',
+    home_gallery_desc: '记录田间试验、仪器设备与日常科研的瞬间。',
     home_partners_title: '合作伙伴',
     home_equipment_title: '仪器设备',
     home_people_title: '团队成员',
@@ -156,6 +158,8 @@ export const ui = {
     home_research_desc: 'Multidisciplinary research on core scientific questions of intelligent agriculture.',
     home_news_title: 'News',
     home_news_desc: 'Latest updates and activities of the lab.',
+    home_gallery_title: 'Lab Gallery',
+    home_gallery_desc: 'Moments from field trials, equipment and daily research.',
     home_partners_title: 'Partners',
     home_equipment_title: 'Equipment',
     home_people_title: 'People',
@@ -211,4 +215,18 @@ export function t(lang: Lang) {
 export const heroImages: string[] = [
   '/images/zhuYe1.jpg',
   '/images/ZhuYe2.jpg',
+];
+
+/**
+ * 首页「实验室掠影」图集。
+ *
+ * 怎么加照片：
+ *   1. 把图片文件放到 public/images/gallery/ 目录下（文件名建议用英文/数字，不要有空格）；
+ *   2. 在下面的数组里加一行，src 写 '/images/gallery/文件名.jpg'；
+ *   3. caption_zh / caption_en 是照片说明（鼠标悬停时显示，点击照片可放大看图）。
+ *   数组留空 [] 时，首页会自动隐藏这个板块。
+ */
+export const galleryImages: { src: string; caption_zh: string; caption_en: string }[] = [
+  { src: '/images/zhuYe1.jpg', caption_zh: '小麦田间试验', caption_en: 'Wheat field trial' },
+  { src: '/images/ZhuYe2.jpg', caption_zh: '作物长势监测', caption_en: 'Crop growth monitoring' },
 ];
