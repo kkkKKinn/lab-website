@@ -13,8 +13,8 @@ const people = defineCollection({
     name_en: z.string(),
     title_zh: z.string(), // 职称/头衔
     title_en: z.string(),
-    // 角色：负责人 / 教师 / 博士后 / 学生 / 合作专家
-    role: z.enum(['director', 'faculty', 'postdoc', 'student', 'collaborator']),
+    // 角色：负责人 / 教师 / 博士后 / 博士 / 研究生 / 本科生 / 合作专家
+    role: z.enum(['director', 'faculty', 'postdoc', 'phd', 'student', 'undergrad', 'collaborator']),
     bio_zh: z.string(),
     bio_en: z.string(),
     research_zh: z.string(),

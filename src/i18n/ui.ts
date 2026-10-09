@@ -57,8 +57,10 @@ export const ui = {
     roles: {
       director: '实验室负责人',
       faculty: '教师 / 研究员',
-      postdoc: '博士',
-      student: '研究生/本科生',
+      postdoc: '博士后',
+      phd: '博士',
+      student: '研究生',
+      undergrad: '本科生',
       collaborator: '合作专家',
     },
     // 首页
@@ -144,7 +146,9 @@ export const ui = {
       director: 'Principal Investigator',
       faculty: 'Faculty / Researcher',
       postdoc: 'Postdoctoral Fellow',
+      phd: 'Ph.D. Student',
       student: 'Graduate Student',
+      undergrad: 'Undergraduate',
       collaborator: 'Collaborating Expert',
     },
     home_hero_title: 'Advancing Modern Agriculture with Intelligent Sensing & AI',

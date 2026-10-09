@@ -46,7 +46,9 @@ collections:
           - { label: 实验室负责人, value: director }
           - { label: 教师 / 研究员, value: faculty }
           - { label: 博士后, value: postdoc }
+          - { label: 博士, value: phd }
           - { label: 研究生, value: student }
+          - { label: 本科生, value: undergrad }
           - { label: 合作专家, value: collaborator }
       - { name: bio_zh, label: 简介（中文）, widget: text }
       - { name: bio_en, label: 简介（英文）, widget: text }
