@@ -13,10 +13,10 @@ export const langNames: Record<Lang, string> = {
 
 /** 实验室全局信息（双语） */
 export const lab = {
-  name_zh: 'AI作物精准管控实验室',
-  name_en: 'AI-Based Intelligent Precision Crop Management Lab',
-  short_zh: 'AI作物精准管控实验室',
-  short_en: 'AICPM  Lab',
+  name_zh: 'AI作物感知与精准管控课题组',
+  name_en: 'AI Crop Sensing and Precision Management Group',
+  short_zh: 'AI作物感知与精准管控课题组',
+  short_en: 'AICSPM  Group',
   org_zh: '中国农业大学 · 资源与环境学院',
   org_en: 'China Agricultural University · College of Resources and Environmental Sciences',
   address_zh: '北京市海淀区圆明园西路2号',
