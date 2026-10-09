@@ -12,4 +12,9 @@ export default defineConfig({
   base,
   output: 'static',
   trailingSlash: 'always',
+  // 旧成员文件曾从 wang-qiang 改名为 ping-jinming，保留旧链接避免 404
+  redirects: {
+    '/zh/people/wang-qiang/': '/zh/people/ping-jinming/',
+    '/en/people/wang-qiang/': '/en/people/ping-jinming/',
+  },
 });
