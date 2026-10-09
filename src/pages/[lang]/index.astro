@@ -95,11 +95,6 @@ const searchIndex = [
           <a href={navHref(L, '/research')} class="btn btn--primary">{u.home_hero_cta}</a>
           <a href={navHref(L, '/people')} class="btn btn--ghost hero__ghost">{u.home_hero_cta2}</a>
         </div>
-        <div class="hero__stats">
-          <div class="hero__stat"><span class="hero__stat-num">{papers.length}+</span><span class="hero__stat-label">{isZh ? '发表论文' : 'Publications'}</span></div>
-          <div class="hero__stat"><span class="hero__stat-num">{projects.length}</span><span class="hero__stat-label">{isZh ? '在研项目' : 'Projects'}</span></div>
-          <div class="hero__stat"><span class="hero__stat-num">{people.length}</span><span class="hero__stat-label">{isZh ? '团队成员' : 'Members'}</span></div>
-        </div>
       </div>
     </div>
   </section>
@@ -316,29 +311,6 @@ const searchIndex = [
     gap: 14px;
     flex-wrap: wrap;
   }
-  .hero__stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 36px;
-    margin-top: 44px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-  }
-  .hero__stat {
-    display: flex;
-    flex-direction: column;
-  }
-  .hero__stat-num {
-    font-size: 30px;
-    font-weight: 800;
-    line-height: 1.1;
-    color: #fff;
-  }
-  .hero__stat-label {
-    font-size: 13.5px;
-    color: rgba(255, 255, 255, 0.78);
-    margin-top: 4px;
-  }
   .hero__ghost {
     color: #fff;
     border-color: rgba(255, 255, 255, 0.6);
@@ -497,11 +469,6 @@ const searchIndex = [
     }
     .hero {
       padding: 64px 0 96px;
-    }
-    .hero__stats {
-      gap: 20px;
-      margin-top: 32px;
-      padding-top: 22px;
     }
   }
 </style>
