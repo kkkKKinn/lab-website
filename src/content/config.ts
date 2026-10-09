@@ -60,6 +60,18 @@ const projects = defineCollection({
   }),
 });
 
+const directions = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name_zh: z.string(), // 方向名称（中文）
+    name_en: z.string(),
+    desc_zh: z.string(), // 方向简介（中文，一到两句话）
+    desc_en: z.string(),
+    image: z.string().optional(),
+    order: z.number().default(0),
+  }),
+});
+
 const equipment = defineCollection({
   type: 'content',
   schema: z.object({
@@ -107,6 +119,7 @@ export const collections = {
   people,
   papers,
   projects,
+  directions,
   equipment,
   partners,
   news,

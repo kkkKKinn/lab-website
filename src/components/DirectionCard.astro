@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  direction: CollectionEntry<'directions'>;
+  lang: Lang;
+  index: number;
+}
+
+const { direction, lang, index } = Astro.props;
+const d = direction.data;
+const isZh = lang === 'zh';
+const name = isZh ? d.name_zh : d.name_en;
+const desc = isZh ? d.desc_zh : d.desc_en;
+// 视觉序号：01 / 02 …
+const num = String(index + 1).padStart(2, '0');
+---
+
+<article class="card direction-card">
+  <span class="direction-card__num" aria-hidden="true">{num}</span>
+  <h3 class="direction-card__name">{name}</h3>
+  <p class="direction-card__desc">{desc}</p>
+</article>
+
+<style>
+  .direction-card {
+    position: relative;
+    overflow: hidden;
+    padding-top: 26px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  /* 顶部色条 + 右上角大号序号，强调「方向」的视觉层级 */
+  .direction-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), #2f7d46);
+  }
+  .direction-card__num {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    font-family: var(--font-serif);
+    color: var(--color-primary);
+    opacity: 0.16;
+  }
+  .direction-card__name {
+    font-size: 18px;
+    margin-bottom: 10px;
+    padding-right: 44px;
+  }
+  .direction-card__desc {
+    color: var(--color-text-muted);
+    font-size: 14.5px;
+  }
+  .direction-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+</style>

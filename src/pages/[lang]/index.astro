@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import { lab, t, heroImages, galleryImages } from '../../i18n/ui';
 import { navHref, isLang, asset } from '../../i18n/utils';
 import PeopleCard from '../../components/PeopleCard.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
+import DirectionCard from '../../components/DirectionCard.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 
@@ -20,22 +20,23 @@ const L = isLang(lang) ? lang : 'zh';
 const isZh = L === 'zh';
 const u = t(L);
 
-const [people, papers, projects, news] = await Promise.all([
+const [people, papers, projects, directions, news] = await Promise.all([
   getCollection('people'),
   getCollection('papers'),
   getCollection('projects'),
+  getCollection('directions'),
   getCollection('news'),
 ]);
 
 people.sort((a, b) => a.data.order - b.data.order);
 projects.sort((a, b) => a.data.order - b.data.order);
+directions.sort((a, b) => a.data.order - b.data.order);
 news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 // 首页「团队成员」板块：优先展示后台勾选了 featured 的成员，最多 4 位；
 // 若一个都没勾选，则回退为按 order 取前 4 位，保证板块不为空。
 const pinnedPeople = people.filter((p) => p.data.featured);
 const featuredPeople = (pinnedPeople.length > 0 ? pinnedPeople : people).slice(0, 4);
-const ongoingProjects = projects.filter((p) => p.data.status === 'ongoing').slice(0, 3);
 const recentNews = news.slice(0, 3);
 const labName = isZh ? lab.name_zh : lab.name_en;
 const labOrg = isZh ? lab.org_zh : lab.org_en;
@@ -155,8 +156,8 @@ const searchIndex = [
         </div>
         <a href={navHref(L, '/research')} class="btn btn--ghost">{u.viewAll}</a>
       </div>
-      <div class="grid grid--3">
-        {ongoingProjects.map((p) => <ProjectCard project={p} lang={L} />)}
+      <div class="grid grid--4">
+        {directions.map((d, i) => <DirectionCard direction={d} lang={L} index={i} />)}
       </div>
     </div>
   </section>

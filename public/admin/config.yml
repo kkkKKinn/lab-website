@@ -89,6 +89,22 @@ collections:
       - { name: abstract_en, label: 摘要（英文）, widget: text, required: false }
       - { name: featured, label: 设为代表成果（首页突出展示）, widget: boolean, default: false, required: false }
 
+  # ================= 研究方向 =================
+  - name: directions
+    label: 研究方向
+    label_singular: 方向
+    folder: src/content/directions
+    create: true
+    slug: "{{name_en | slugify}}"
+    sortable_fields: ["order", "name_en"]
+    fields:
+      - { name: name_zh, label: 方向名称（中文）, widget: string }
+      - { name: name_en, label: 方向名称（英文）, widget: string }
+      - { name: desc_zh, label: 方向简介（中文）, widget: text, hint: 一到两句话说明该方向做什么，会显示在首页 }
+      - { name: desc_en, label: 方向简介（英文）, widget: text }
+      - { name: image, label: 方向配图, widget: image, required: false }
+      - { name: order, label: 排序（数字越小越靠前）, widget: number, default: 0, value_type: int, required: false }
+
   # ================= 研究项目 =================
   - name: projects
     label: 研究项目
