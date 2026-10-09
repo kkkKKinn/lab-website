@@ -6,7 +6,6 @@ import { navHref, isLang, asset } from '../../i18n/utils';
 import PeopleCard from '../../components/PeopleCard.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import NewsCard from '../../components/NewsCard.astro';
-import PartnerCard from '../../components/PartnerCard.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 
 export async function getStaticPaths() {
@@ -21,18 +20,15 @@ const L = isLang(lang) ? lang : 'zh';
 const isZh = L === 'zh';
 const u = t(L);
 
-const [people, papers, projects, equipment, partners, news] = await Promise.all([
+const [people, papers, projects, news] = await Promise.all([
   getCollection('people'),
   getCollection('papers'),
   getCollection('projects'),
-  getCollection('equipment'),
-  getCollection('partners'),
   getCollection('news'),
 ]);
 
 people.sort((a, b) => a.data.order - b.data.order);
 projects.sort((a, b) => a.data.order - b.data.order);
-partners.sort((a, b) => a.data.order - b.data.order);
 news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 // 首页「团队成员」板块：优先展示后台勾选了 featured 的成员，最多 4 位；
@@ -64,18 +60,6 @@ const searchIndex = [
     title: isZh ? p.data.title_zh : p.data.title_en,
     desc: isZh ? p.data.summary_zh : p.data.summary_en,
     url: navHref(L, '/research'),
-  })),
-  ...equipment.map((e) => ({
-    typeLabel: typeLabel('设备', 'Equipment'),
-    title: isZh ? e.data.name_zh : e.data.name_en,
-    desc: isZh ? e.data.desc_zh : e.data.desc_en,
-    url: navHref(L, '/equipment'),
-  })),
-  ...partners.map((p) => ({
-    typeLabel: typeLabel('合作', 'Partners'),
-    title: isZh ? p.data.name_zh : p.data.name_en,
-    desc: isZh ? p.data.desc_zh : p.data.desc_en,
-    url: navHref(L, '/partners'),
   })),
   ...news.map((n) => {
     const slug = n.id.replace(/\.md$/, '');
@@ -115,7 +99,6 @@ const searchIndex = [
           <div class="hero__stat"><span class="hero__stat-num">{papers.length}+</span><span class="hero__stat-label">{isZh ? '发表论文' : 'Publications'}</span></div>
           <div class="hero__stat"><span class="hero__stat-num">{projects.length}</span><span class="hero__stat-label">{isZh ? '在研项目' : 'Projects'}</span></div>
           <div class="hero__stat"><span class="hero__stat-num">{people.length}</span><span class="hero__stat-label">{isZh ? '团队成员' : 'Members'}</span></div>
-          <div class="hero__stat"><span class="hero__stat-num">{partners.length}+</span><span class="hero__stat-label">{isZh ? '合作单位' : 'Partners'}</span></div>
         </div>
       </div>
     </div>
@@ -216,20 +199,6 @@ const searchIndex = [
     </div>
   </section>
 
-  <!-- ===== 合作伙伴 ===== -->
-  <section class="section section--alt" data-reveal>
-    <div class="container">
-      <div class="section__head">
-        <div class="section__head__text">
-          <div class="section__kicker">Partners</div>
-          <h2 class="section__title">{u.home_partners_title}</h2>
-        </div>
-      </div>
-      <div class="grid grid--4">
-        {partners.map((p) => <PartnerCard partner={p} lang={L} />)}
-      </div>
-    </div>
-  </section>
 </Layout>
 
 <script>

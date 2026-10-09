@@ -36,8 +36,6 @@ export const navItems: NavItem[] = [
   { key: 'people', href: '/people', label_zh: '团队成员', label_en: 'People' },
   { key: 'research', href: '/research', label_zh: '研究方向', label_en: 'Research' },
   { key: 'publications', href: '/publications', label_zh: '论文成果', label_en: 'Publications' },
-  { key: 'equipment', href: '/equipment', label_zh: '仪器设备', label_en: 'Equipment' },
-  { key: 'partners', href: '/partners', label_zh: '合作单位', label_en: 'Partners' },
   { key: 'news', href: '/news', label_zh: '新闻动态', label_en: 'News' },
 ];
 
