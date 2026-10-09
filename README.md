@@ -168,8 +168,8 @@ npm run preview    # 预览构建产物
 所有内容都遵循 **中英成对字段** 的写法，例如：
 
 ```yaml
-title_zh: 小麦养分智慧管控
-title_en: Intelligent Wheat Nutrient Management
+title_zh: 小麦精准管控
+title_en: Intelligent Wheat Precision Management
 ```
 
 页面会按当前语言只渲染对应字段，所以**增删内容时务必把 `_zh` 和 `_en` 两栏都填上**。
