@@ -1,0 +1,182 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { t } from '../../../i18n/ui';
+import { isLang, navHref, asset } from '../../../i18n/utils';
+
+/** 每位成员在中英两种语言下各生成一个详情页 */
+export async function getStaticPaths() {
+  const people = await getCollection('people');
+  return people.flatMap((p) => {
+    const id = p.id.replace(/\.md$/, '');
+    return [
+      { params: { lang: 'zh', id } },
+      { params: { lang: 'en', id } },
+    ];
+  });
+}
+
+const { lang, id } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const people = await getCollection('people');
+const entry = people.find((p) => p.id.replace(/\.md$/, '') === id);
+
+// 找不到该成员（例如链接失效）时回退到成员列表页
+if (!entry) {
+  return Astro.redirect(navHref(L, '/people'), 302);
+}
+
+const d = entry.data;
+const name = isZh ? d.name_zh : d.name_en;
+const title = isZh ? d.title_zh : d.title_en;
+const bio = isZh ? d.bio_zh : d.bio_en;
+const research = isZh ? d.research_zh : d.research_en;
+const roleLabel = u.roles[d.role];
+const initial = name.charAt(0).toUpperCase();
+
+// 简介支持多段：按空行拆成段落，避免长文挤成一块
+const paragraphs = bio.split(/\n+/).filter((p) => p.trim());
+---
+
+{/* Layout 会自动拼上「· 实验室名」，这里只传人名，避免重复 */}
+<Layout lang={L} title={name} description={title} active="people">
+  <article class="person-detail">
+    <div class="container">
+      <a href={navHref(L, '/people')} class="back">← {u.people_back}</a>
+
+      <header class="person-detail__head">
+        {d.avatar ? (
+          <img class="person-detail__avatar" src={asset(d.avatar)} alt={name} />
+        ) : (
+          <div class="person-detail__avatar person-detail__avatar--initial">{initial}</div>
+        )}
+        <div class="person-detail__identity">
+          <h1 class="person-detail__name">{name}</h1>
+          <div class="person-detail__title">{title}</div>
+          <span class="tag">{roleLabel}</span>
+        </div>
+      </header>
+
+      <div class="person-detail__body">
+        <section class="person-detail__block">
+          <h2 class="person-detail__label">{u.person_bio}</h2>
+          {paragraphs.map((p) => <p class="person-detail__text">{p}</p>)}
+        </section>
+
+        <section class="person-detail__block">
+          <h2 class="person-detail__label">{u.researchInterests}</h2>
+          <p class="person-detail__text">{research}</p>
+        </section>
+
+        {(d.email || d.homepage) && (
+          <section class="person-detail__block">
+            <h2 class="person-detail__label">{u.person_contact}</h2>
+            <ul class="person-detail__contacts">
+              {d.email && (
+                <li>
+                  <a href={`mailto:${d.email}`}>✉ {d.email}</a>
+                </li>
+              )}
+              {d.homepage && (
+                <li>
+                  <a href={d.homepage} target="_blank" rel="noopener">
+                    ↗ {u.person_homepage}
+                  </a>
+                </li>
+              )}
+            </ul>
+          </section>
+        )}
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .person-detail {
+    padding: 48px 0 80px;
+  }
+  .back {
+    display: inline-block;
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+
+  /* 顶部名片：头像 + 姓名 / 职称 / 角色 */
+  .person-detail__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-5);
+  }
+  .person-detail__avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--color-border);
+  }
+  .person-detail__avatar--initial {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--color-primary), #2f7d46);
+    color: #fff;
+    font-size: 44px;
+    font-weight: 700;
+    border: none;
+  }
+  .person-detail__name {
+    font-size: clamp(26px, 3.4vw, 34px);
+    margin-bottom: 6px;
+  }
+  .person-detail__title {
+    color: var(--color-text-muted);
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  /* 正文：简介 / 研究方向 / 联系方式 */
+  .person-detail__body {
+    max-width: 760px;
+  }
+  .person-detail__block {
+    margin-bottom: var(--space-4);
+  }
+  .person-detail__label {
+    font-size: 18px;
+    padding-bottom: 8px;
+    margin-bottom: var(--space-2);
+    border-bottom: 2px solid var(--color-primary-light);
+  }
+  .person-detail__text {
+    font-size: 16.5px;
+    line-height: 1.9;
+    margin-bottom: 12px;
+  }
+  .person-detail__contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  @media (max-width: 560px) {
+    .person-detail__head {
+      flex-direction: column;
+      text-align: center;
+    }
+    .person-detail__avatar {
+      width: 92px;
+      height: 92px;
+    }
+  }
+</style>

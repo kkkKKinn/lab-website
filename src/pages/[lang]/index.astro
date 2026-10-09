@@ -51,7 +51,7 @@ const searchIndex = [
     typeLabel: typeLabel('成员', 'People'),
     title: isZh ? p.data.name_zh : p.data.name_en,
     desc: isZh ? p.data.title_zh : p.data.title_en,
-    url: navHref(L, '/people'),
+    url: navHref(L, `/people/${p.id.replace(/\.md$/, '')}`),
   })),
   ...papers.map((p) => ({
     typeLabel: typeLabel('论文', 'Publications'),

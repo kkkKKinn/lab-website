@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { t, type Lang } from '../i18n/ui';
-import { asset } from '../i18n/utils';
+import { asset, navHref } from '../i18n/utils';
 
 interface Props {
   person: CollectionEntry<'people'>;
@@ -17,9 +17,18 @@ const bio = isZh ? d.bio_zh : d.bio_en;
 const research = isZh ? d.research_zh : d.research_en;
 const roleLabel = t(lang).roles[d.role];
 const initial = (isZh ? d.name_zh : d.name_en).charAt(0).toUpperCase();
+// 详情页地址：/zh/people/文件名/（entry.id 形如 "zhang-wei.md"）
+const detailHref = navHref(lang, `/people/${person.id.replace(/\.md$/, '')}`);
 ---
 
 <article class="card person-card">
+  {/* 覆盖整张卡片的透明链接，让卡片任意位置都能点进详情页；
+      邮箱 / 个人主页链接被抬到它上层，仍可单独点击 */}
+  <a
+    class="person-card__hit"
+    href={detailHref}
+    aria-label={isZh ? `查看 ${name} 的详细信息` : `View profile of ${name}`}
+  ></a>
   <div class="person-card__top">
     {d.avatar ? (
       <img class="person-card__avatar" src={asset(d.avatar)} alt={name} loading="lazy" />
@@ -44,13 +53,24 @@ const initial = (isZh ? d.name_zh : d.name_en).charAt(0).toUpperCase();
     )}
     {d.homepage && (
       <a href={d.homepage} target="_blank" rel="noopener" class="person-card__link">
-        ↗ {isZh ? '个人主页' : 'Homepage'}
+        ↗ {t(lang).person_homepage}
       </a>
     )}
+    <span class="person-card__more">{t(lang).person_view} →</span>
   </div>
 </article>
 
 <style>
+  .person-card {
+    position: relative;
+  }
+  /* 覆盖整卡片的透明链接（撑满父元素），让点击卡片任意处都能进详情页 */
+  .person-card__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: var(--radius);
+  }
   .person-card__top {
     display: flex;
     gap: 16px;
@@ -99,6 +119,7 @@ const initial = (isZh ? d.name_zh : d.name_en).charAt(0).toUpperCase();
   .person-card__links {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 14px;
     border-top: 1px solid var(--color-border);
     padding-top: 12px;
@@ -107,5 +128,21 @@ const initial = (isZh ? d.name_zh : d.name_en).charAt(0).toUpperCase();
     font-size: 13.5px;
     color: var(--color-primary);
     font-weight: 500;
+    /* 只把这两个真实链接抬到整卡点击层之上，保证它们仍能单独点击 */
+    position: relative;
+    z-index: 2;
+  }
+  .person-card__more {
+    margin-left: auto;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+    transition: transform 0.2s ease;
+    /* 它位于整卡点击层之上，必须让点击穿透下去，否则点它没有反应 */
+    pointer-events: none;
+  }
+  .person-card:hover .person-card__more {
+    transform: translateX(3px);
   }
 </style>

@@ -86,6 +86,11 @@ export const ui = {
     // 成员页
     people_title: '团队成员',
     people_desc: '实验室的教师、研究人员与学生。',
+    people_back: '返回团队成员',
+    person_bio: '个人简介',
+    person_contact: '联系方式',
+    person_homepage: '个人主页',
+    person_view: '查看详情',
     // 研究页
     research_title: '研究方向',
     research_desc: '我们关注的核心科学问题与技术攻关方向。',
@@ -165,6 +170,11 @@ export const ui = {
     home_people_title: 'People',
     people_title: 'People',
     people_desc: 'Faculty, researchers and students of the lab.',
+    people_back: 'Back to people',
+    person_bio: 'Biography',
+    person_contact: 'Contact',
+    person_homepage: 'Homepage',
+    person_view: 'View profile',
     research_title: 'Research',
     research_desc: 'Core scientific questions and technical directions we focus on.',
     research_ongoing: 'Ongoing Projects',
