@@ -17,20 +17,35 @@
   --color-text: #1f2937;
   --color-text-muted: #64748b;
   --color-text-invert: #f8fafc;
+  --color-heading: #0f172a;      /* 标题/强调文字（比正文更深） */
 
-  /* 字体 */
-  --font-sans: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  /* ===== 字体栈 ===== */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
     sans-serif;
   --font-serif: "Source Serif 4", "Songti SC", "SimSun", Georgia, serif;
 
-  /* 尺寸 */
-  --container: 1160px;
-  --radius-sm: 9px;
-  --radius: 14px;
-  --radius-lg: 20px;
+  /* 基准字号（正文） */
+  --text-base: 16px;
 
-  /* 间距比例（全部用 4/8 的倍数，页面才有统一节奏） */
+  /* ===== 尺寸 ===== */
+  --container: 1160px;
+  --container-padding: 24px;
+  --section-y: 72px;             /* 板块上下留白 */
+  --header-h: 68px;
+
+  /* ===== 圆角三档 ===== */
+  --radius-sm: 9px;              /* 小：标签、小图标 */
+  --radius: 14px;                /* 中：卡片、按钮 */
+  --radius-lg: 20px;             /* 大：大图、弹层 */
+  --radius-pill: 999px;          /* 全圆：胶囊按钮/开关 */
+
+  /* ===== 阴影三档 ===== */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);   /* 静态：卡片默认 */
+  --shadow: 0 4px 16px rgba(16, 24, 40, 0.07);     /* 悬浮：hover */
+  --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.12); /* 弹层：灯箱、强调 */
+
+  /* ===== 间距刻度（4/8 的倍数，页面才有统一节奏） ===== */
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
@@ -39,10 +54,14 @@
   --space-6: 64px;
   --space-7: 96px;
 
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
-  --shadow: 0 4px 16px rgba(16, 24, 40, 0.07);
-  --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.12);
-  --header-h: 68px;
+  /* ===== 焦点环（供 :focus-visible 使用） ===== */
+  --ring-width: 3px;
+  --ring-offset: 2px;
+  --ring-color: rgba(20, 83, 45, 0.55);
+  --ring-color-invert: rgba(255, 255, 255, 0.92);  /* 深底场景（页脚/灯箱） */
+
+  /* ===== 层级 ===== */
+  --z-header: 50;
 }
 
 * {
@@ -61,7 +80,7 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.7;
-  font-size: 16px;
+  font-size: var(--text-base);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -81,11 +100,28 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
-/* 键盘焦点可见性（可访问性） */
+/* ---------- 键盘焦点（可访问性） ---------- */
+/* 鼠标点击时不显示焦点框，键盘 Tab 导航时才显示 */
+:focus:not(:focus-visible) {
+  outline: none;
+}
 :focus-visible {
-  outline: 3px solid rgba(20, 83, 45, 0.45);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+  /* 不要在这里写 border-radius：那会给所有聚焦元素加圆角，造成视觉跳动。
+     现代浏览器的 outline 会自动跟随元素自身的圆角。 */
+}
+/* 深底场景（首页大图 / 页脚 / 灯箱）上绿环看不见，改用反白环 */
+.hero :focus-visible,
+.site-footer :focus-visible,
+.gallery__lightbox :focus-visible {
+  outline-color: var(--ring-color-invert);
+}
+/* Windows 高对比度模式：交给系统色，保证一定能看见 */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: var(--ring-width) solid Highlight;
+  }
 }
 
 /* 滚动揭示动画：仅当 JS 给 <html> 加上 .js 后才隐藏，保证禁用 JS 时内容仍可见 */
@@ -114,7 +150,7 @@ h1, h2, h3, h4 {
   line-height: 1.25;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #0f172a;
+  color: var(--color-heading);
 }
 
 /* ---------- 布局容器 ---------- */
@@ -122,11 +158,11 @@ h1, h2, h3, h4 {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: 24px;
+  padding-inline: var(--container-padding);
 }
 
 .section {
-  padding-block: 72px;
+  padding-block: var(--section-y);
 }
 .section--alt {
   background: var(--color-surface);
@@ -181,7 +217,7 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 8px;
   padding: 11px 22px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-weight: 600;
   font-size: 15px;
   border: 1px solid transparent;
@@ -212,7 +248,7 @@ h1, h2, h3, h4 {
 /* ---------- 卡片网格 ---------- */
 .grid {
   display: grid;
-  gap: 24px;
+  gap: var(--space-3);
 }
 .grid--3 {
   grid-template-columns: repeat(3, 1fr);
@@ -228,7 +264,7 @@ h1, h2, h3, h4 {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: var(--space-3);
   box-shadow: var(--shadow-sm);
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
@@ -250,7 +286,7 @@ h1, h2, h3, h4 {
   display: inline-flex;
   align-items: center;
   padding: 3px 11px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 12.5px;
   font-weight: 600;
   background: var(--color-primary-light);
@@ -265,7 +301,7 @@ h1, h2, h3, h4 {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: var(--z-header);
   height: var(--header-h);
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: saturate(180%) blur(12px);
@@ -288,7 +324,7 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 12px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--color-heading);
   font-size: 17px;
   line-height: 1.2;
 }
@@ -301,7 +337,7 @@ h1, h2, h3, h4 {
 .brand__logo {
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background: var(--color-primary);
   color: #fff;
   display: grid;
@@ -323,7 +359,7 @@ h1, h2, h3, h4 {
 }
 .nav__link {
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 15px;
   font-weight: 500;
   color: var(--color-text);
@@ -347,7 +383,7 @@ h1, h2, h3, h4 {
 .lang-switch {
   display: inline-flex;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
   background: var(--color-surface);
 }
