@@ -56,6 +56,7 @@ collections:
       - { name: avatar, label: 头像, widget: image, required: false }
       - { name: homepage, label: 个人主页链接, widget: string, required: false }
       - { name: order, label: 排序（数字越小越靠前）, widget: number, default: 0, value_type: int, required: false }
+      - { name: featured, label: 首页展示（勾选后出现在首页「团队成员」板块，最多 4 位）, widget: boolean, default: false, required: false }
 
   # ================= 论文成果 =================
   - name: papers

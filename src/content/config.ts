@@ -23,6 +23,8 @@ const people = defineCollection({
     avatar: z.string().optional(),
     homepage: z.string().optional(),
     order: z.number().default(0),
+    // 勾选后出现在首页「团队成员」板块（最多 4 位）；不勾选则只出现在成员页
+    featured: z.boolean().default(false),
   }),
 });
 

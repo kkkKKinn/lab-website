@@ -35,7 +35,10 @@ projects.sort((a, b) => a.data.order - b.data.order);
 partners.sort((a, b) => a.data.order - b.data.order);
 news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const featuredPeople = people.slice(0, 4);
+// 首页「团队成员」板块：优先展示后台勾选了 featured 的成员，最多 4 位；
+// 若一个都没勾选，则回退为按 order 取前 4 位，保证板块不为空。
+const pinnedPeople = people.filter((p) => p.data.featured);
+const featuredPeople = (pinnedPeople.length > 0 ? pinnedPeople : people).slice(0, 4);
 const ongoingProjects = projects.filter((p) => p.data.status === 'ongoing').slice(0, 3);
 const recentNews = news.slice(0, 3);
 const labName = isZh ? lab.name_zh : lab.name_en;
