@@ -100,8 +100,12 @@ collections:
     fields:
       - { name: name_zh, label: 方向名称（中文）, widget: string }
       - { name: name_en, label: 方向名称（英文）, widget: string }
-      - { name: desc_zh, label: 方向简介（中文）, widget: text, hint: 一到两句话说明该方向做什么，会显示在首页 }
+      - { name: desc_zh, label: 方向简介（中文）, widget: text, hint: 第一段说明，会显示在首页 }
       - { name: desc_en, label: 方向简介（英文）, widget: text }
+      - { name: detail_zh, label: 方向补充说明（中文，选填）, widget: text, required: false, hint: 第二段说明，如没有可留空 }
+      - { name: detail_en, label: 方向补充说明（英文，选填）, widget: text, required: false }
+      - { name: points_zh, label: 重点内容（中文）, widget: list, required: false, hint: 每条一行，例如：卫星遥感 }
+      - { name: points_en, label: 重点内容（英文）, widget: list, required: false }
       - { name: image, label: 方向配图, widget: image, required: false }
       - { name: order, label: 排序（数字越小越靠前）, widget: number, default: 0, value_type: int, required: false }
 

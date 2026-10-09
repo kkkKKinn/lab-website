@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { lab, t, heroImages, galleryImages } from '../../i18n/ui';
+import { lab, t, heroImages, galleryImages, homeCopy } from '../../i18n/ui';
 import { navHref, isLang, asset } from '../../i18n/utils';
 import PeopleCard from '../../components/PeopleCard.astro';
 import DirectionCard from '../../components/DirectionCard.astro';
@@ -91,7 +91,8 @@ const searchIndex = [
       <div class="hero__inner">
         <div class="hero__org">{labOrg}</div>
         <h1 class="hero__title">{u.home_hero_title}</h1>
-        <p class="hero__sub">{u.home_hero_sub}</p>
+        <p class="hero__sub">{isZh ? homeCopy.heroTagline.zh : homeCopy.heroTagline.en}</p>
+        <p class="hero__desc">{isZh ? homeCopy.heroDesc.zh : homeCopy.heroDesc.en}</p>
         <div class="hero__actions">
           <a href={navHref(L, '/research')} class="btn btn--primary">{u.home_hero_cta}</a>
           <a href={navHref(L, '/people')} class="btn btn--ghost hero__ghost">{u.home_hero_cta2}</a>
@@ -106,7 +107,9 @@ const searchIndex = [
       <div class="about__head">
         <div class="section__kicker">{labName}</div>
         <h2 class="section__title">{u.home_welcome_title}</h2>
-        <p class="section__desc">{u.home_welcome_body}</p>
+        <div class="about__intro">
+          {homeCopy.intro.map((p) => <p>{isZh ? p.zh : p.en}</p>)}
+        </div>
       </div>
       <div class="about__body">
         <form class="site-search" role="search" autocomplete="off" onsubmit="return false">
@@ -158,6 +161,38 @@ const searchIndex = [
       </div>
       <div class="grid grid--4">
         {directions.map((d, i) => <DirectionCard direction={d} lang={L} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 研究理念 ===== -->
+  <section class="section section--alt" data-reveal>
+    <div class="container">
+      <div class="section__head">
+        <div class="section__head__text">
+          <div class="section__kicker">Philosophy</div>
+          <h2 class="section__title">{isZh ? homeCopy.philosophyTitle.zh : homeCopy.philosophyTitle.en}</h2>
+          <p class="section__desc">{isZh ? homeCopy.philosophyDesc.zh : homeCopy.philosophyDesc.en}</p>
+        </div>
+      </div>
+      <div class="grid grid--4">
+        {homeCopy.philosophy.map((p) => (
+          <article class="card philosophy-card">
+            <h3 class="philosophy-card__title">{isZh ? p.title_zh : p.title_en}</h3>
+            <p class="philosophy-card__text">{isZh ? p.text_zh : p.text_en}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 实验室愿景 ===== -->
+  <section class="section" data-reveal>
+    <div class="container">
+      <div class="vision">
+        <div class="section__kicker">Vision</div>
+        <h2 class="section__title">{isZh ? homeCopy.visionTitle.zh : homeCopy.visionTitle.en}</h2>
+        <p class="vision__text">{isZh ? homeCopy.vision.zh : homeCopy.vision.en}</p>
       </div>
     </div>
   </section>
@@ -301,11 +336,55 @@ const searchIndex = [
     font-family: var(--font-serif);
   }
   .hero__sub {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.85);
+    font-size: 19px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    max-width: 640px;
+  }
+  .hero__desc {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.82);
     line-height: 1.75;
     margin-bottom: 32px;
     max-width: 640px;
+  }
+  .about__intro p {
+    margin: 0 0 12px;
+  }
+  .about__intro p:last-child {
+    margin-bottom: 0;
+  }
+  .philosophy-card__title {
+    font-size: 16.5px;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+  }
+  .philosophy-card__text {
+    color: var(--color-text-muted);
+    font-size: 14.5px;
+  }
+  .vision {
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 36px 28px;
+    border-radius: var(--radius);
+    background: linear-gradient(165deg, #ffffff 0%, #f1f8f3 100%);
+    border: 1px solid rgba(20, 83, 45, 0.16);
+    border-top: 4px solid var(--color-primary);
+    box-shadow: 0 20px 45px -24px rgba(13, 59, 32, 0.4);
+  }
+  .vision .section__title {
+    margin-top: 6px;
+    margin-bottom: 14px;
+  }
+  .vision__text {
+    color: var(--color-text-muted);
+    font-size: 16px;
+    line-height: 1.85;
   }
   .hero__actions {
     display: flex;

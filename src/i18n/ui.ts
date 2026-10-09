@@ -247,3 +247,69 @@ export const galleryImages: { src: string; caption_zh: string; caption_en: strin
     caption_en: 'Raspberry Pi edge computing node',
   },
 ];
+
+/**
+ * 首页主体文案（Hero 标语、实验室简介正文、研究理念、实验室愿景）。
+ * 全部中英成对存放；改这里就能更新首页文案，不必动页面结构。
+ */
+export const homeCopy = {
+  heroTagline: {
+    zh: '感知农田状态，理解作物需求，驱动精准管理',
+    en: 'Sensing field status, understanding crop demand, driving precision management',
+  },
+  heroDesc: {
+    zh: '融合遥感、近地感知、计算机视觉与人工智能，研究农田环境与作物状态的多尺度感知、动态理解和精准管理方法，服务作物高产、资源高效与农业绿色发展。',
+    en: 'Integrating remote sensing, proximal sensing, computer vision and artificial intelligence, we study multi-scale perception, dynamic understanding and precision management of field environments and crop status, serving high yields, resource efficiency and green agricultural development.',
+  },
+  // 实验室简介正文（按数组顺序逐段渲染）
+  intro: [
+    {
+      zh: 'AI作物感知与精准管控课题组 依托中国农业大学资源与环境学院和河北曲周农业绿色发展国家野外科学观测研究站，面向农业绿色发展与大面积单产提升需求，开展农田多源感知、作物状态诊断、资源需求解析与精准管理研究。',
+      en: 'The AI Crop Sensing and Precision Management Group is affiliated with the College of Resources and Environmental Sciences of China Agricultural University and the Quzhou National Field Scientific Observation and Research Station for Agricultural Green Development in Hebei. Addressing the needs of agricultural green development and large-area yield improvement, we conduct research on multi-source field sensing, crop status diagnosis, resource demand analysis and precision management.',
+    },
+    {
+      zh: '课题组融合卫星遥感、无人机遥感、近地传感、计算机视觉、多模态学习与人工智能等技术，获取并解析农田环境、作物群体结构、生长状态、水肥状况及管理信息，研究作物状态形成与动态变化规律。',
+      en: 'The group integrates satellite remote sensing, UAV remote sensing, proximal sensing, computer vision, multimodal learning and artificial intelligence to acquire and interpret information on field environments, crop canopy structure, growth status, water and nutrient conditions, and management practices, and to investigate how crop status forms and evolves.',
+    },
+    {
+      zh: '研究重点从传统的“指标反演”进一步拓展到状态理解、需求解析、管理响应与智能决策，探索从农田感知、作物诊断、需求预测到精准施肥、精准灌溉和变量作业的完整技术链。',
+      en: 'Our research focus extends from conventional index retrieval to status understanding, demand analysis, management response and intelligent decision-making, spanning the full technical chain from field sensing, crop diagnosis and demand prediction to precision fertilization, precision irrigation and variable-rate operations.',
+    },
+  ],
+  philosophyTitle: { zh: '研究理念', en: 'Research Philosophy' },
+  philosophyDesc: {
+    zh: '我们如何看待数据、模型与田间行动之间的关系。',
+    en: 'How we think about data, models and action in the field.',
+  },
+  philosophy: [
+    {
+      title_zh: '从“获取数据”到“理解状态”',
+      title_en: 'From “acquiring data” to “understanding status”',
+      text_zh: '不仅追求更多传感器和更多数据，更关注数据能否真实表征作物与农田状态。',
+      text_en: 'Beyond collecting more data with more sensors, we care whether the data truly represent crop and field status.',
+    },
+    {
+      title_zh: '从“预测指标”到“解析需求”',
+      title_en: 'From “predicting indices” to “analyzing demand”',
+      text_zh: '不仅预测LAI、SPAD或氮含量，更关注这些指标背后的作物状态与管理需求。',
+      text_en: 'Beyond predicting LAI, SPAD or nitrogen content, we care about the crop status and management needs behind these indices.',
+    },
+    {
+      title_zh: '从“静态诊断”到“动态推断”',
+      title_en: 'From “static diagnosis” to “dynamic inference”',
+      text_zh: '利用多时期观测理解作物状态如何演化，以及管理措施如何改变其生长轨迹。',
+      text_en: 'We use multi-temporal observations to understand how crop status evolves and how management practices reshape its growth trajectory.',
+    },
+    {
+      title_zh: '从“模型结果”到“田间行动”',
+      title_en: 'From “model outputs” to “field action”',
+      text_zh: '最终让算法服务于施肥、灌溉、变量作业和农田管理，而不仅停留在模型精度。',
+      text_en: 'Algorithms should ultimately serve fertilization, irrigation, variable-rate operations and field management — not stop at model accuracy.',
+    },
+  ],
+  visionTitle: { zh: '实验室愿景', en: 'Our Vision' },
+  vision: {
+    zh: '构建农田状态感知、作物需求认知与精准管理的新范式，推动农业生产向智能化、精准化和绿色化演进。',
+    en: 'We aim to establish a new paradigm for field status sensing, crop demand cognition and precision management, advancing agriculture toward intelligent, precise and green production.',
+  },
+};

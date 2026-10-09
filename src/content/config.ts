@@ -65,8 +65,13 @@ const directions = defineCollection({
   schema: z.object({
     name_zh: z.string(), // 方向名称（中文）
     name_en: z.string(),
-    desc_zh: z.string(), // 方向简介（中文，一到两句话）
+    desc_zh: z.string(), // 方向简介第一段（中文）
     desc_en: z.string(),
+    detail_zh: z.string().optional(), // 方向简介第二段（中文，选填）
+    detail_en: z.string().optional(),
+    // 该方向的「重点内容」关键词列表，卡片上以小标签展示
+    points_zh: z.array(z.string()).default([]),
+    points_en: z.array(z.string()).default([]),
     image: z.string().optional(),
     order: z.number().default(0),
   }),

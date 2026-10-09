@@ -13,6 +13,8 @@ const d = direction.data;
 const isZh = lang === 'zh';
 const name = isZh ? d.name_zh : d.name_en;
 const desc = isZh ? d.desc_zh : d.desc_en;
+const detail = isZh ? d.detail_zh : d.detail_en;
+const points = isZh ? d.points_zh : d.points_en;
 // 视觉序号：01 / 02 …
 const num = String(index + 1).padStart(2, '0');
 ---
@@ -21,6 +23,12 @@ const num = String(index + 1).padStart(2, '0');
   <span class="direction-card__num" aria-hidden="true">{num}</span>
   <h3 class="direction-card__name">{name}</h3>
   <p class="direction-card__desc">{desc}</p>
+  {detail && <p class="direction-card__detail">{detail}</p>}
+  {points.length > 0 && (
+    <ul class="direction-card__points">
+      {points.map((p) => <li>{p}</li>)}
+    </ul>
+  )}
 </article>
 
 <style>
@@ -57,6 +65,28 @@ const num = String(index + 1).padStart(2, '0');
   .direction-card__desc {
     color: var(--color-text-muted);
     font-size: 14.5px;
+  }
+  .direction-card__detail {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  .direction-card__points {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .direction-card__points li {
+    font-size: 12.5px;
+    line-height: 1.4;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(20, 83, 45, 0.08);
+    border: 1px solid rgba(20, 83, 45, 0.14);
+    color: var(--color-primary);
   }
   .direction-card:hover {
     transform: translateY(-3px);
