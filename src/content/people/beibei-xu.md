@@ -10,7 +10,11 @@ research_zh: 农业遥感、计算机视觉与智慧农业交叉研究
 research_en: agricultural remote sensing, computer vision, and smart agriculture
 email: xubeibei@cau.edu.cn
 avatar: /media/1791702163467.png
-homepage: '个人主页：https://faculty.cau.edu.cn/xbb1/ 谷歌学术：https://scholar.google.com/citations?hl=en&user=h9ZNarIAAAAJ  ORCID: https://orcid.org/0000-0001-5804-2906 Linkedin: https://www.linkedin.com/in/beibei-xu-3407a0311/?isSelfProfile=true'
+homepage:
+  - https://faculty.cau.edu.cn/xbb1/
+  - https://scholar.google.com/citations?hl=en&user=h9ZNarIAAAAJ
+  - https://orcid.org/0000-0001-5804-2906
+  - https://www.linkedin.com/in/beibei-xu-3407a0311/?isSelfProfile=true
 order: 0
 featured: true
 ---

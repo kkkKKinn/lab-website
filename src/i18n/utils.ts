@@ -45,3 +45,39 @@ export function asset(src: string | undefined): string {
   if (src.startsWith('/')) return BASE + src.slice(1);
   return src;
 }
+
+/**
+ * 把「个人主页链接」字段统一成字符串数组。
+ * 后台是 list 控件（数组），历史数据可能是单个字符串，
+ * 甚至是一行里塞了多个 URL 的长文本，这里一并兼容拆分。
+ */
+export function toLinks(v: string | string[] | undefined): string[] {
+  if (!v) return [];
+  const raw = Array.isArray(v) ? v : [v];
+  const out: string[] = [];
+  for (const item of raw) {
+    if (typeof item !== 'string') continue;
+    const urls = item.match(/https?:\/\/[^\s，,；;]+/g);
+    if (urls && urls.length > 0) out.push(...urls);
+    else out.push(item);
+  }
+  return out.map((s) => s.trim().replace(/[）)。，,；;]+$/, '')).filter(Boolean);
+}
+
+/** 常见学术 / 社交平台链接的显示名 */
+const LINK_LABELS: Array<[RegExp, string]> = [
+  [/researchgate\.net/i, 'ResearchGate'],
+  [/scholar\.google\./i, 'Google Scholar'],
+  [/orcid\.org/i, 'ORCID'],
+  [/linkedin\.com/i, 'LinkedIn'],
+  [/github\.com/i, 'GitHub'],
+  [/(^|\/\/)(www\.)?(x|twitter)\.com/i, 'X'],
+];
+
+/** 给链接取一个可读的名字：已知平台用平台名，否则回退到给定文案（如「个人主页」） */
+export function linkLabel(url: string, fallback: string): string {
+  for (const [re, name] of LINK_LABELS) {
+    if (re.test(url)) return name;
+  }
+  return fallback;
+}

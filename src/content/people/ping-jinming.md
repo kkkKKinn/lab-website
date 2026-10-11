@@ -10,6 +10,7 @@ research_zh: 多模态学习; 计算机视觉; 无人机与卫星遥感; 养分�
 research_en: multimodal learning; computer vision; UAV and satellite remote sensing; nutrient diagnosis and precise water and fertilizer regulation
 email: pingjm@cau.edu.cn
 avatar: ''
-homepage: https://www.researchgate.net/profile/Jinming-Ping
+homepage:
+  - https://www.researchgate.net/profile/Jinming-Ping
 order: 2
 ---

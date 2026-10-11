@@ -21,7 +21,8 @@ const people = defineCollection({
     research_en: z.string().default(''),
     email: z.string().optional(),
     avatar: z.string().optional(),
-    homepage: z.string().optional(),
+    // 个人主页等链接，可填多个（后台为 list 控件）；兼容历史单个字符串写法
+    homepage: z.union([z.string(), z.array(z.string())]).optional(),
     order: z.number().default(0),
     // 勾选后出现在首页「团队成员」板块（最多 4 位）；不勾选则只出现在成员页
     featured: z.boolean().default(false),

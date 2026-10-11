@@ -2,7 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../../i18n/ui';
-import { isLang, navHref, asset } from '../../../i18n/utils';
+import { isLang, navHref, asset, toLinks, linkLabel } from '../../../i18n/utils';
 
 /** 每位成员在中英两种语言下各生成一个详情页 */
 export async function getStaticPaths() {
@@ -34,6 +34,7 @@ const name = isZh ? d.name_zh : d.name_en;
 const title = isZh ? d.title_zh : d.title_en;
 const bio = isZh ? d.bio_zh : d.bio_en;
 const research = isZh ? d.research_zh : d.research_en;
+const links = toLinks(d.homepage);
 const roleLabel = u.roles[d.role];
 const initial = name.charAt(0).toUpperCase();
 
@@ -73,7 +74,7 @@ const paragraphs = bio.split(/\n+/).filter((p) => p.trim());
           </section>
         )}
 
-        {(d.email || d.homepage) && (
+        {(d.email || links.length > 0) && (
           <section class="person-detail__block">
             <h2 class="person-detail__label">{u.person_contact}</h2>
             <ul class="person-detail__contacts">
@@ -82,13 +83,13 @@ const paragraphs = bio.split(/\n+/).filter((p) => p.trim());
                   <a href={`mailto:${d.email}`}>✉ {d.email}</a>
                 </li>
               )}
-              {d.homepage && (
+              {links.map((url) => (
                 <li>
-                  <a href={d.homepage} target="_blank" rel="noopener">
-                    ↗ {u.person_homepage}
+                  <a href={url} target="_blank" rel="noopener">
+                    ↗ {linkLabel(url, u.person_homepage)}
                   </a>
                 </li>
-              )}
+              ))}
             </ul>
           </section>
         )}

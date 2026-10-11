@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { t, type Lang } from '../i18n/ui';
-import { asset, navHref } from '../i18n/utils';
+import { asset, navHref, toLinks, linkLabel } from '../i18n/utils';
 
 interface Props {
   person: CollectionEntry<'people'>;
@@ -16,6 +16,7 @@ const title = isZh ? d.title_zh : d.title_en;
 const bio = isZh ? d.bio_zh : d.bio_en;
 const research = isZh ? d.research_zh : d.research_en;
 const roleLabel = t(lang).roles[d.role];
+const links = toLinks(d.homepage);
 const initial = (isZh ? d.name_zh : d.name_en).charAt(0).toUpperCase();
 // 详情页地址：/zh/people/文件名/（entry.id 形如 "zhang-wei.md"）
 const detailHref = navHref(lang, `/people/${person.id.replace(/\.md$/, '')}`);
@@ -53,11 +54,11 @@ const detailHref = navHref(lang, `/people/${person.id.replace(/\.md$/, '')}`);
         ✉ {d.email}
       </a>
     )}
-    {d.homepage && (
-      <a href={d.homepage} target="_blank" rel="noopener" class="person-card__link">
-        ↗ {t(lang).person_homepage}
+    {links.map((url) => (
+      <a href={url} target="_blank" rel="noopener" class="person-card__link">
+        ↗ {linkLabel(url, t(lang).person_homepage)}
       </a>
-    )}
+    ))}
     <span class="person-card__more">{t(lang).person_view} →</span>
   </div>
 </article>
