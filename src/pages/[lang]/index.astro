@@ -258,6 +258,13 @@ const searchIndex = [
     try { index = JSON.parse(dataEl.textContent || '[]'); } catch (e) { index = []; }
     const emptyText = input.getAttribute('data-empty') || '未找到相关结果';
 
+    // 关键词直达：输入含“管理后台”或“admin”时，自动跳转至 CMS 管理后台
+    const ADMIN_URL = 'https://kkkkkinn.github.io/lab-website/admin/';
+    const isAdminQuery = (q) => {
+      const v = (q || '').trim().toLowerCase();
+      return v.includes('管理后台') || v.includes('admin');
+    };
+
     const close = () => { results.innerHTML = ''; results.hidden = true; };
     const render = (q) => {
       const query = (q || '').trim().toLowerCase();
@@ -279,7 +286,13 @@ const searchIndex = [
       results.hidden = false;
     };
 
-    input.addEventListener('input', (e) => render(e.target.value));
+    input.addEventListener('input', (e) => {
+      if (isAdminQuery(e.target.value)) {
+        window.location.href = ADMIN_URL;
+        return;
+      }
+      render(e.target.value);
+    });
     input.addEventListener('focus', (e) => render(e.target.value));
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {

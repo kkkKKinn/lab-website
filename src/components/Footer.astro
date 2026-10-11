@@ -1,6 +1,6 @@
 ---
 import { lab, navItems, type Lang } from '../i18n/ui';
-import { navHref, BASE } from '../i18n/utils';
+import { navHref } from '../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -44,9 +44,6 @@ const year = new Date().getFullYear();
     </div>
     <div class="site-footer__bottom">
       <span>© {year} {t ? lab.name_zh : lab.name_en}. {t ? '版权所有' : 'All rights reserved.'}</span>
-      <span>
-        <a href={`${BASE}admin/`} target="_blank" rel="noopener">{t ? '管理后台' : 'Admin'}</a>
-      </span>
     </div>
   </div>
 </footer>
