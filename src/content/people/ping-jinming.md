@@ -9,8 +9,9 @@ bio_en: Jinming Ping is a Ph.D. student in the 2026 cohort of Agricultural Green
 research_zh: 多模态学习; 计算机视觉; 无人机与卫星遥感; 养分诊断与肥水精准调控
 research_en: multimodal learning; computer vision; UAV and satellite remote sensing; nutrient diagnosis and precise water and fertilizer regulation
 email: pingjm@cau.edu.cn
-avatar: ''
+avatar: /media/10f69f62c5fc44cc27fa161ada6cf6d7.png
 homepage:
   - https://www.researchgate.net/profile/Jinming-Ping
 order: 2
+featured: false
 ---
