@@ -128,6 +128,11 @@ const searchIndex = [
           <ul class="site-search__results" id="siteSearchResults" hidden></ul>
         </form>
         <script type="application/json" id="searchIndexData" set:html={JSON.stringify(searchIndex)}></script>
+        <img
+          class="about__banner"
+          src={asset('/images/group-banner.png')}
+          alt={isZh ? 'AI作物感知与精准管控课题组' : 'AI Crop Sensing and Precision Management Research Group'}
+        />
       </div>
     </div>
   </section>
@@ -445,6 +450,15 @@ const searchIndex = [
     color: var(--color-text-muted);
     font-size: 15.5px;
     box-shadow: 0 20px 45px -20px rgba(13, 59, 32, 0.38), 0 2px 8px rgba(13, 59, 32, 0.06);
+  }
+  /* 搜索框下方的课题组横幅：占满卡片可用宽度 */
+  .about__banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 22px;
+    border-radius: 10px;
+    background: #fff;
   }
   .site-search {
     position: relative;
