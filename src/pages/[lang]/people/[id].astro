@@ -55,7 +55,7 @@ const paragraphs = bio.split(/\n+/).filter((p) => p.trim());
         )}
         <div class="person-detail__identity">
           <h1 class="person-detail__name">{name}</h1>
-          <div class="person-detail__title">{title}</div>
+          {title && <div class="person-detail__title">{title}</div>}
           <span class="tag">{roleLabel}</span>
         </div>
       </header>
@@ -66,10 +66,12 @@ const paragraphs = bio.split(/\n+/).filter((p) => p.trim());
           {paragraphs.map((p) => <p class="person-detail__text">{p}</p>)}
         </section>
 
-        <section class="person-detail__block">
-          <h2 class="person-detail__label">{u.researchInterests}</h2>
-          <p class="person-detail__text">{research}</p>
-        </section>
+        {research && (
+          <section class="person-detail__block">
+            <h2 class="person-detail__label">{u.researchInterests}</h2>
+            <p class="person-detail__text">{research}</p>
+          </section>
+        )}
 
         {(d.email || d.homepage) && (
           <section class="person-detail__block">

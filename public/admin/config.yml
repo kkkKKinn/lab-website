@@ -36,8 +36,8 @@ collections:
     fields:
       - { name: name_zh, label: 姓名（中文）, widget: string }
       - { name: name_en, label: 姓名（英文）, widget: string }
-      - { name: title_zh, label: 职称（中文）, widget: string }
-      - { name: title_en, label: 职称（英文）, widget: string }
+      - { name: title_zh, label: 职称（中文）, widget: string, required: false }
+      - { name: title_en, label: 职称（英文）, widget: string, required: false }
       - name: role
         label: 角色
         widget: select
@@ -52,8 +52,8 @@ collections:
           - { label: 合作专家, value: collaborator }
       - { name: bio_zh, label: 简介（中文）, widget: text }
       - { name: bio_en, label: 简介（英文）, widget: text }
-      - { name: research_zh, label: 研究方向（中文）, widget: string }
-      - { name: research_en, label: 研究方向（英文）, widget: string }
+      - { name: research_zh, label: 研究方向（中文）, widget: string, required: false }
+      - { name: research_en, label: 研究方向（英文）, widget: string, required: false }
       - { name: email, label: 邮箱, widget: string, required: false }
       - { name: avatar, label: 头像, widget: image, required: false }
       - { name: homepage, label: 个人主页链接, widget: string, required: false }

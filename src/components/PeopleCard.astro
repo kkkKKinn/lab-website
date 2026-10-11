@@ -37,14 +37,16 @@ const detailHref = navHref(lang, `/people/${person.id.replace(/\.md$/, '')}`);
     )}
     <div>
       <h3 class="person-card__name">{name}</h3>
-      <div class="person-card__title">{title}</div>
+      {title && <div class="person-card__title">{title}</div>}
       <span class="tag">{roleLabel}</span>
     </div>
   </div>
   <p class="person-card__bio">{bio}</p>
-  <div class="person-card__research">
-    <strong>{t(lang).researchInterests}</strong>：{research}
-  </div>
+  {research && (
+    <div class="person-card__research">
+      <strong>{t(lang).researchInterests}</strong>：{research}
+    </div>
+  )}
   <div class="person-card__links">
     {d.email && (
       <a href={`mailto:${d.email}`} class="person-card__link">
