@@ -21,7 +21,7 @@ export const lab = {
   org_en: 'China Agricultural University · College of Resources and Environmental Sciences',
   address_zh: '北京市海淀区圆明园西路2号',
   address_en: 'No. 2 Yuanmingyuan West Road, Haidian District, Beijing.',
-  email: '*******',
+  email: 'xubeibei@cau.edu.cn',
 };
 
 export interface NavItem {
