@@ -328,9 +328,9 @@ const searchIndex = [
   .hero {
     position: relative;
     background:
-      radial-gradient(1000px 500px at 85% -10%, rgba(202, 138, 4, 0.25), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(47, 125, 70, 0.35), transparent 60%),
-      linear-gradient(135deg, #0d3b20 0%, #14532d 55%, #1c6b3a 100%);
+      radial-gradient(1000px 500px at 85% -10%, rgba(202, 138, 4, 0.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(47, 125, 70, 0.22), transparent 60%),
+      linear-gradient(135deg, #06281a 0%, #0a3a22 55%, #10512c 100%);
     color: #fff;
     padding: 96px 0 72px;
     overflow: hidden;
@@ -429,7 +429,8 @@ const searchIndex = [
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(13, 59, 32, 0.78), rgba(20, 83, 45, 0.62));
+    /* 中性深色遮罩（不再叠绿色）：左侧压暗保文字对比度，右侧透出照片 */
+    background: linear-gradient(100deg, rgba(6, 10, 8, 0.82) 0%, rgba(6, 10, 8, 0.62) 42%, rgba(6, 10, 8, 0.44) 100%);
   }
   .hero__slide {
     position: absolute;
@@ -438,6 +439,7 @@ const searchIndex = [
     background-position: center;
     opacity: 0;
     transform: scale(1.06);
+    filter: saturate(0.9);
     transition: opacity 1.6s ease, transform 9s ease;
   }
   .hero__slide.is-active {
