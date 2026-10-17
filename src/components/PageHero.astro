@@ -28,7 +28,20 @@ const bgUrl = bg ? asset(bg) : '';
   .page-hero {
     background: linear-gradient(180deg, var(--color-primary) 0%, #0d3b20 100%);
     color: #fff;
-    padding: 64px 0;
+    /* 原来只有 padding: 64px 0，横幅高约 230px，显得又窄又薄；
+       改用 min-height + 垂直居中，横幅拉高，背景图展示更充分 */
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 0;
+  }
+  /* 手机上不要占满整屏，适当收低 */
+  @media (max-width: 720px) {
+    .page-hero {
+      min-height: 240px;
+      padding: 56px 0;
+    }
   }
   /* 传入背景图时：照片 + 深色遮罩，叠在纯色兜底之上（图片缺失也不会露白） */
   .page-hero--with-bg {
