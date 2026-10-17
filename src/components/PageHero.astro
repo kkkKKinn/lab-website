@@ -1,14 +1,22 @@
 ---
+import { asset } from '../i18n/utils';
+
 interface Props {
   kicker?: string;
   title: string;
   desc?: string;
+  /** 顶部背景图路径（以 '/' 开头，如 '/images/page-people.jpg'）；不传则用纯色渐变 */
+  bg?: string;
 }
 
-const { kicker, title, desc } = Astro.props;
+const { kicker, title, desc, bg } = Astro.props;
+const bgUrl = bg ? asset(bg) : '';
 ---
 
-<div class="page-hero">
+<div
+  class:list={['page-hero', { 'page-hero--with-bg': !!bgUrl }]}
+  style={bgUrl ? `--page-hero-bg: url('${bgUrl}')` : undefined}
+>
   <div class="container">
     {kicker && <div class="section__kicker">{kicker}</div>}
     <h1 class="page-hero__title">{title}</h1>
@@ -21,6 +29,13 @@ const { kicker, title, desc } = Astro.props;
     background: linear-gradient(180deg, var(--color-primary) 0%, #0d3b20 100%);
     color: #fff;
     padding: 64px 0;
+  }
+  /* 传入背景图时：照片 + 深色遮罩，叠在纯色兜底之上（图片缺失也不会露白） */
+  .page-hero--with-bg {
+    background:
+      linear-gradient(180deg, rgba(5, 16, 10, 0.78) 0%, rgba(5, 16, 10, 0.66) 100%),
+      var(--page-hero-bg, none) center / cover no-repeat,
+      linear-gradient(180deg, var(--color-primary) 0%, #0d3b20 100%);
   }
   .page-hero :global(.section__kicker) {
     color: #fcd34d;

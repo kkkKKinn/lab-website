@@ -249,6 +249,17 @@ export const galleryImages: { src: string; caption_zh: string; caption_en: strin
 ];
 
 /**
+ * 各内页顶部背景图（团队成员 / 研究方向 / 新闻动态）。
+ * 键为页面标识，值是以 '/' 开头的图片路径，文件放在 public/images/ 下。
+ * 某个页面想改回纯绿色：把对应值改成 '' 或删掉那一行即可。
+ */
+export const pageHeroImages: Record<string, string> = {
+  people: '/images/page-people.jpg',
+  research: '/images/page-research.jpg',
+  news: '/images/page-news.jpg',
+};
+
+/**
  * 首页主体文案（Hero 标语、实验室简介正文、研究理念、实验室愿景）。
  * 全部中英成对存放；改这里就能更新首页文案，不必动页面结构。
  */

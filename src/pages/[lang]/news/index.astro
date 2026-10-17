@@ -1,7 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { lab, t } from '../../../i18n/ui';
+import { lab, t, pageHeroImages } from '../../../i18n/ui';
 import { isLang } from '../../../i18n/utils';
 import PageHero from '../../../components/PageHero.astro';
 import NewsCard from '../../../components/NewsCard.astro';
@@ -25,7 +25,7 @@ const title = isZh ? lab.name_zh : lab.name_en;
 ---
 
 <Layout lang={L} title={u.news_title} description={u.news_desc} active="news">
-  <PageHero kicker={title} title={u.news_title} desc={u.news_desc} />
+  <PageHero kicker={title} title={u.news_title} desc={u.news_desc} bg={pageHeroImages.news} />
 
   <section class="section">
     <div class="container">
