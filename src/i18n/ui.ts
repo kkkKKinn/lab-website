@@ -226,7 +226,6 @@ export function t(lang: Lang) {
  */
 export const heroImages: string[] = [
   '/images/zhuYe1.jpg',
-  '/images/ZhuYe2.jpg',
   '/images/hero-satellite.jpg',
 ];
 
