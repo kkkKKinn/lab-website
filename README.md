@@ -261,6 +261,26 @@ export const galleryImages: { src: string; caption_zh: string; caption_en: strin
 2. 页面顶部用 `getStaticPaths` 产出 `/zh/xxx/` 与 `/en/xxx/` 两套路由；
 3. 别忘了在 `Header.astro` 的导航里加上入口链接。
 
+### 7. 隐藏页面（不在导航显示，仅靠搜索框进入）
+
+以下三个页面**有意不加入导航**，访客需在首页搜索框输入关键词进入：
+
+| 页面 | 网址 | 搜索关键词（中 / 英） |
+|---|---|---|
+| 论文成果 | `/publications` | 论文成果、论文、publications |
+| 仪器设备 | `/equipment` | 仪器设备、设备、equipment |
+| 合作单位 | `/partners` | 合作单位、合作、partners |
+
+实现方式：页面文件照常存在于 `src/pages/[lang]/`，但 `src/i18n/ui.ts` 的 `navItems` 里**没有**对应条目；同时在 `src/pages/[lang]/index.astro` 的 `searchIndex` 里登记了这三个页面的入口（类型标签显示为"页面"）。相关的论文、设备、合作单位条目也都在搜索索引中，搜到的结果会链到对应页面。
+
+想让某个页面重新出现在导航里：在 `navItems` 加回对应条目即可，例如
+
+```ts
+{ key: 'equipment', href: '/equipment', label_zh: '仪器设备', label_en: 'Equipment' },
+```
+
+> 注意：搜索框只存在于首页，所以这条隐藏入口仅对首页有效。
+
 ---
 
 ## 八、提交与上线流程（代码改动怎么生效）

@@ -20,17 +20,26 @@ const L = isLang(lang) ? lang : 'zh';
 const isZh = L === 'zh';
 const u = t(L);
 
-const [people, projects, directions, news] = await Promise.all([
+const [people, papers, projects, directions, news, equipment, partners] = await Promise.all([
   getCollection('people'),
+  getCollection('papers'),
   getCollection('projects'),
   getCollection('directions'),
   getCollection('news'),
+  getCollection('equipment'),
+  getCollection('partners'),
 ]);
 
 people.sort((a, b) => a.data.order - b.data.order);
+papers.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.year - a.data.year;
+});
 projects.sort((a, b) => a.data.order - b.data.order);
 directions.sort((a, b) => a.data.order - b.data.order);
 news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+equipment.sort((a, b) => a.data.order - b.data.order);
+partners.sort((a, b) => a.data.order - b.data.order);
 
 // 首页「团队成员」板块：优先展示后台勾选了 featured 的成员，最多 4 位；
 // 若一个都没勾选，则回退为按 order 取前 4 位，保证板块不为空。
@@ -43,11 +52,21 @@ const labOrg = isZh ? lab.org_zh : lab.org_en;
 // —— 站内搜索索引（按当前语言生成） ——
 const typeLabel = (zh: string, en: string) => (isZh ? zh : en);
 const searchIndex = [
+  // 不在导航里的"隐藏页面"入口：访客在首页搜索框搜这些词即可进入
+  { typeLabel: typeLabel('页面', 'Page'), title: u.publications_title, desc: u.publications_desc, url: navHref(L, '/publications') },
+  { typeLabel: typeLabel('页面', 'Page'), title: u.equipment_title, desc: u.equipment_desc, url: navHref(L, '/equipment') },
+  { typeLabel: typeLabel('页面', 'Page'), title: u.partners_title, desc: u.partners_desc, url: navHref(L, '/partners') },
   ...people.map((p) => ({
     typeLabel: typeLabel('成员', 'People'),
     title: isZh ? p.data.name_zh : p.data.name_en,
     desc: isZh ? p.data.title_zh : p.data.title_en,
     url: navHref(L, `/people/${p.id.replace(/\.md$/, '')}`),
+  })),
+  ...papers.map((p) => ({
+    typeLabel: typeLabel('论文', 'Publications'),
+    title: isZh ? p.data.title_zh : p.data.title_en,
+    desc: `${p.data.authors} · ${p.data.year} · ${p.data.venue}`,
+    url: navHref(L, '/publications'),
   })),
   ...projects.map((p) => ({
     typeLabel: typeLabel('项目', 'Projects'),
@@ -64,6 +83,18 @@ const searchIndex = [
       url: navHref(L, `/news/${slug}`),
     };
   }),
+  ...equipment.map((e) => ({
+    typeLabel: typeLabel('设备', 'Equipment'),
+    title: isZh ? e.data.name_zh : e.data.name_en,
+    desc: `${e.data.model} · ${isZh ? e.data.category_zh : e.data.category_en}`,
+    url: navHref(L, '/equipment'),
+  })),
+  ...partners.map((p) => ({
+    typeLabel: typeLabel('合作单位', 'Partners'),
+    title: isZh ? p.data.name_zh : p.data.name_en,
+    desc: isZh ? p.data.desc_zh : p.data.desc_en,
+    url: navHref(L, '/partners'),
+  })),
 ];
 ---
 

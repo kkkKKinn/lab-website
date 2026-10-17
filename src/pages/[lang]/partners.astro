@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { lab, t } from '../../i18n/ui';
+import { isLang } from '../../i18n/utils';
+import PageHero from '../../components/PageHero.astro';
+import PartnerCard from '../../components/PartnerCard.astro';
+
+export async function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const L = isLang(lang) ? lang : 'zh';
+const isZh = L === 'zh';
+const u = t(L);
+
+const partners = await getCollection('partners');
+partners.sort((a, b) => a.data.order - b.data.order);
+
+const title = isZh ? lab.name_zh : lab.name_en;
+---
+
+<!--
+  注意：本页面【有意不加入导航菜单】（navItems 中没有 partners 条目）。
+  访客通过首页搜索框搜索「合作单位 / 合作 / partners」进入，
+  搜索入口在 src/pages/[lang]/index.astro 的 searchIndex 中登记。
+  想让它出现在导航里：在 src/i18n/ui.ts 的 navItems 中加回 partners 条目即可。
+-->
+<Layout lang={L} title={u.partners_title} description={u.partners_desc}>
+  <PageHero kicker={title} title={u.partners_title} desc={u.partners_desc} />
+
+  <section class="section">
+    <div class="container">
+      {partners.length > 0 ? (
+        <div class="grid grid--3">
+          {partners.map((partner) => <PartnerCard partner={partner} lang={L} />)}
+        </div>
+      ) : (
+        <p class="empty">{isZh ? '暂无合作单位。' : 'No partners yet.'}</p>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .empty {
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: 60px 0;
+  }
+</style>
