@@ -30,7 +30,7 @@ const bgUrl = bg ? asset(bg) : '';
     color: #fff;
     /* 原来只有 padding: 64px 0，横幅高约 230px，显得又窄又薄；
        改用 min-height + 垂直居中，横幅拉高，背景图展示更充分 */
-    min-height: 480px;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,7 +39,7 @@ const bgUrl = bg ? asset(bg) : '';
   /* 手机上不要占满整屏，适当收低 */
   @media (max-width: 720px) {
     .page-hero {
-      min-height: 300px;
+      min-height: 380px;
       padding: 56px 0;
     }
   }
