@@ -20,9 +20,8 @@ const L = isLang(lang) ? lang : 'zh';
 const isZh = L === 'zh';
 const u = t(L);
 
-const [people, papers, projects, directions, news] = await Promise.all([
+const [people, projects, directions, news] = await Promise.all([
   getCollection('people'),
-  getCollection('papers'),
   getCollection('projects'),
   getCollection('directions'),
   getCollection('news'),
@@ -49,12 +48,6 @@ const searchIndex = [
     title: isZh ? p.data.name_zh : p.data.name_en,
     desc: isZh ? p.data.title_zh : p.data.title_en,
     url: navHref(L, `/people/${p.id.replace(/\.md$/, '')}`),
-  })),
-  ...papers.map((p) => ({
-    typeLabel: typeLabel('论文', 'Publications'),
-    title: isZh ? p.data.title_zh : p.data.title_en,
-    desc: `${p.data.authors} · ${p.data.year} · ${p.data.venue}`,
-    url: navHref(L, '/publications'),
   })),
   ...projects.map((p) => ({
     typeLabel: typeLabel('项目', 'Projects'),
@@ -121,7 +114,7 @@ const searchIndex = [
             type="search"
             id="siteSearchInput"
             class="site-search__input"
-            placeholder={isZh ? '搜索成员、论文、项目、新闻…' : 'Search members, papers, projects, news…'}
+            placeholder={isZh ? '搜索成员、项目、新闻…' : 'Search members, projects, news…'}
             aria-label={isZh ? '站内搜索' : 'Site search'}
             data-empty={isZh ? '未找到相关结果' : 'No results found'}
           />

@@ -198,12 +198,14 @@ title_en: Intelligent Wheat Precision Management
 2. 打开 `src/i18n/ui.ts`，找到 `heroImages` 数组，加一行绝对路径：
    ```ts
    export const heroImages: string[] = [
-     '/images/zhuYe1.jpg',
-     '/images/ZhuYe2.jpg',
-     '/images/你的新图.jpg',   // ← 新增
+     '/images/zhuYe1.jpg',          // 金色麦田
+     '/images/ZhuYe2.jpg',          // 绿色麦浪
+     '/images/hero-satellite.jpg',  // 卫星遥感意境图
+     '/images/hero-drone.jpg',      // 无人机遥感麦田
+     // '/images/你的新图.jpg',      // ← 新增就加一行
    ];
    ```
-   数组留空 `[]` 则不显示背景图。每 10 秒自动切换一张。
+   数组留空 `[]` 则不显示背景图。每 10 秒自动切换一张，数组顺序即播放顺序。
 
 ### 3. 改"实验室掠影"图集（封面流）
 

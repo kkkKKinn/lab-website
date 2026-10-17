@@ -33,9 +33,8 @@ export interface NavItem {
 
 export const navItems: NavItem[] = [
   { key: 'home', href: '/', label_zh: '首页', label_en: 'Home' },
-  { key: 'people', href: '/people', label_zh: '团队成员', label_en: 'People' },
+  { key: 'people', href: '/people', label_zh: '主要成员', label_en: 'People' },
   { key: 'research', href: '/research', label_zh: '研究方向', label_en: 'Research' },
-  { key: 'publications', href: '/publications', label_zh: '论文成果', label_en: 'Publications' },
   { key: 'news', href: '/news', label_zh: '新闻动态', label_en: 'News' },
 ];
 
@@ -67,7 +66,7 @@ export const ui = {
       '我们聚焦作物表型、无人机遥感与人工智能交叉方向，构建从田间数据采集到模型决策的完整技术链条。',
     home_hero_cta: '了解研究方向',
     home_hero_cta2: '认识团队',
-    home_stats_people: '团队成员',
+    home_stats_people: '主要成员',
     home_stats_papers: '发表论文',
     home_stats_projects: '在研项目',
     home_stats_equipment: '仪器设备',
@@ -82,11 +81,11 @@ export const ui = {
     home_gallery_desc: '记录田间试验、仪器设备与日常科研的瞬间。',
     home_partners_title: '合作伙伴',
     home_equipment_title: '仪器设备',
-    home_people_title: '团队成员',
+    home_people_title: '主要成员',
     // 成员页
-    people_title: '团队成员',
+    people_title: '主要成员',
     people_desc: '实验室的教师、研究人员与学生。',
-    people_back: '返回团队成员',
+    people_back: '返回主要成员',
     person_bio: '个人简介',
     person_contact: '联系方式',
     person_homepage: '个人主页',
@@ -228,6 +227,7 @@ export const heroImages: string[] = [
   '/images/zhuYe1.jpg',
   '/images/ZhuYe2.jpg',
   '/images/hero-satellite.jpg',
+  '/images/hero-drone.jpg',
 ];
 
 /**

@@ -18,7 +18,9 @@ const u = t(L);
 const people = await getCollection('people');
 people.sort((a, b) => a.data.order - b.data.order);
 
-const roleOrder = ['director', 'faculty', 'postdoc', 'student', 'collaborator'] as const;
+// 分组顺序：必须与 src/content/config.ts 的 role 枚举、后台下拉选项、ui.roles 保持一致，
+// 共 7 种角色。漏掉任何一种，该角色的成员就会从本页消失（详情页不受影响）。
+const roleOrder = ['director', 'faculty', 'postdoc', 'phd', 'student', 'undergrad', 'collaborator'] as const;
 const groups = roleOrder
   .map((role) => ({
     role,
