@@ -19,7 +19,8 @@ const brandName = lang === 'zh' ? lab.short_zh : lab.short_en;
   <div class="container site-header__inner">
        <a href={navHref(lang, '/')} class="brand">
       <img src={asset('/images/logo.png')} alt={brandName} class="brand__logo-img" />
-      <span class="brand__name">{brandName}</span>
+      {/* 课题组标志横幅：取代原来的一行品牌文字（图片在 public/images/group-banner.png） */}
+      <img src={asset('/images/group-banner.png')} alt={brandName} class="brand__logo-text" />
     </a>
 
     <nav class="nav" id="nav">

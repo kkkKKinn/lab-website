@@ -334,6 +334,13 @@ h1, h2, h3, h4 {
   width: auto;
   flex-shrink: 0;
 }
+/* 页眉右侧的课题组标志横幅（原是 brand__name 文字） */
+.brand__logo-text {
+  display: block;
+  height: 44px;
+  width: auto;
+  flex-shrink: 0;
+}
 .brand__logo {
   width: 38px;
   height: 38px;
@@ -493,6 +500,9 @@ h1, h2, h3, h4 {
   .brand__logo-img {
     height: 44px;
   }
+  .brand__logo-text {
+    height: 38px;
+  }
 }
 
 @media (max-width: 720px) {
@@ -554,5 +564,8 @@ h1, h2, h3, h4 {
   }
   .brand__logo-img {
     height: 38px;
+  }
+  .brand__logo-text {
+    height: 32px;
   }
 }
