@@ -360,7 +360,8 @@ const searchIndex = [
     overflow: hidden;
   }
   .hero__inner {
-    max-width: 760px;
+    /* 加宽到接近正文栏全宽，让大标题能排在一行，也与收窄后的背景图同宽 */
+    max-width: 1080px;
   }
   .hero__org {
     display: inline-block;
@@ -372,7 +373,8 @@ const searchIndex = [
   }
   .hero__title {
     color: #fff;
-    font-size: clamp(34px, 5vw, 54px);
+    /* 上限略降，保证 18 个大字在加宽后的文字块里排成一行 */
+    font-size: clamp(32px, 4vw, 48px);
     line-height: 1.15;
     margin-bottom: 20px;
     font-family: var(--font-serif);
@@ -384,14 +386,14 @@ const searchIndex = [
     letter-spacing: 0.02em;
     line-height: 1.6;
     margin-bottom: 12px;
-    max-width: 640px;
+    max-width: 820px;
   }
   .hero__desc {
     font-size: 16px;
     color: rgba(255, 255, 255, 0.82);
     line-height: 1.75;
     margin-bottom: 32px;
-    max-width: 640px;
+    max-width: 820px;
   }
   .about__intro p {
     margin: 0 0 12px;
@@ -445,7 +447,15 @@ const searchIndex = [
  /* —— 背景轮播 —— */
   .hero__bg {
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* 背景图不再铺满整个页宽，收窄到与正文栏（--container）同宽并居中，
+       超出部分露出 .hero 的深色底，避免图片比文字宽出一大截 */
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
     z-index: 0;
     overflow: hidden;
   }
