@@ -32,7 +32,7 @@
   --container: 1160px;
   --container-padding: 24px;
   --section-y: 72px;             /* 板块上下留白 */
-  --header-h: 92px;
+  --header-h: 68px;
 
   /* ===== 圆角三档 ===== */
   --radius-sm: 9px;              /* 小：标签、小图标 */
@@ -330,14 +330,7 @@ h1, h2, h3, h4 {
 }
 .brand__logo-img {
   display: block;
-  height: 64px;
-  width: auto;
-  flex-shrink: 0;
-}
-/* 页眉右侧的课题组标志横幅（原是 brand__name 文字） */
-.brand__logo-text {
-  display: block;
-  height: 68px;
+  height: 50px;
   width: auto;
   flex-shrink: 0;
 }
@@ -498,18 +491,11 @@ h1, h2, h3, h4 {
     gap: 28px;
   }
   .brand__logo-img {
-    height: 56px;
-  }
-  .brand__logo-text {
-    height: 56px;
+    height: 44px;
   }
 }
 
 @media (max-width: 720px) {
-  /* 手机页眉收低一些，避免标志横幅占掉太多首屏 */
-  :root {
-    --header-h: 76px;
-  }
   .section {
     padding-block: 48px;
   }
@@ -567,9 +553,6 @@ h1, h2, h3, h4 {
     display: none;
   }
   .brand__logo-img {
-    height: 46px;
-  }
-  .brand__logo-text {
-    height: 44px;
+    height: 38px;
   }
 }
