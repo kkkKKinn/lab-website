@@ -13,5 +13,5 @@ avatar: /media/10f69f62c5fc44cc27fa161ada6cf6d7.png
 homepage:
   - https://www.researchgate.net/profile/Jinming-Ping
 order: 2
-featured: false
+featured: true
 ---
